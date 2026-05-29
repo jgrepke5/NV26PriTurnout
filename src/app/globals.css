@@ -354,13 +354,38 @@ a:hover {
 .data-group-thead tr.data-group-thead-sticky {
   position: sticky;
   top: var(--nav-height);
-  z-index: 5;
+  z-index: 7;
   background: var(--block-primary-header-bg);
-  box-shadow: 0 1px 0 var(--rule);
+  box-shadow: 0 2px 0 var(--rule);
 }
 
 .data-group-thead tr {
   background: var(--block-primary-header-bg);
+}
+
+.grouped-table-sticky-head {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 7;
+  background: var(--paper-elevated);
+  border-bottom: 1px solid var(--rule);
+  box-shadow: 0 2px 0 var(--rule);
+}
+
+.grouped-table-sticky-head .data-table {
+  min-width: 640px;
+  table-layout: fixed;
+  margin-bottom: 0;
+}
+
+.grouped-table-sticky-head .data-table th {
+  background: var(--block-primary-header-bg);
+  color: var(--ink);
+}
+
+.table-wrap--rural .grouped-table-sticky-head .data-table th {
+  background: #f3ebe0;
+  color: var(--block-historical);
 }
 
 .data-group-thead th {

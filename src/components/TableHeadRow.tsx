@@ -4,19 +4,13 @@ export function TableHeadRow({
   headers,
   sticky = false,
   groupNameColumn = false,
-  sectionHeader = false,
 }: {
   headers: string[];
   sticky?: boolean;
   groupNameColumn?: boolean;
-  sectionHeader?: boolean;
 }) {
   return (
-    <thead
-      className={
-        sticky || sectionHeader ? "data-group-thead" : undefined
-      }
-    >
+    <thead className={sticky ? "data-group-thead" : undefined}>
       <tr className={sticky ? "data-group-thead-sticky" : undefined}>
         {headers.map((h, i) => (
           <th

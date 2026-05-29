@@ -7,6 +7,17 @@ import { TurnoutPieChart } from "./TurnoutPieChart";
 
 export type { DataGroup };
 
+function TableColGroup({ headers }: { headers: string[] }) {
+  return (
+    <colgroup>
+      <col className="col-label" />
+      {headers.slice(1).map((h) => (
+        <col key={h} className="col-data" />
+      ))}
+    </colgroup>
+  );
+}
+
 export function GroupedDataTable({
   headers,
   groups,
@@ -18,21 +29,17 @@ export function GroupedDataTable({
 }) {
   return (
     <div className={`table-wrap table-wrap--${variant ?? "default"} grouped-table`}>
+      <div className="grouped-table-sticky-head">
+        <table className="data-table">
+          <TableColGroup headers={headers} />
+          <TableHeadRow headers={headers} />
+        </table>
+      </div>
       {groups.map((group) => (
         <div key={group.name} className="data-group">
           <div className="data-group-table">
             <table className="data-table">
-              <colgroup>
-                <col className="col-label" />
-                {headers.slice(1).map((h) => (
-                  <col key={h} className="col-data" />
-                ))}
-              </colgroup>
-              <TableHeadRow
-                headers={[group.name, ...headers.slice(1)]}
-                groupNameColumn
-                sectionHeader
-              />
+              <TableColGroup headers={headers} />
               <tbody>
                 {group.rows.map((row, ri) => (
                   <DataTableBodyRow
