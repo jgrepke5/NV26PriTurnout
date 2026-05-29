@@ -27,7 +27,7 @@ type ColumnSpec = {
 const DATA_COLUMNS: ColumnSpec[] = [
   {
     match: (h) => /'26\s*vr/i.test(h),
-    label: "2026 Active Voter Reg",
+    label: "2026 VR",
   },
   { match: (h) => /early voted/i.test(h), label: "Early Voted" },
   { match: (h) => /mail voted/i.test(h), label: "Mail Voted" },
@@ -43,6 +43,7 @@ export type BreakoutTableConfig = {
   labelHeader: string;
   isSectionMarker: (label: string, row: CellValue[], layout: BreakoutLayout) => boolean;
   secondaryBlockTitle: string;
+  primaryBlockTitle?: string;
   filterGroup?: (group: BreakoutGroup, section: BreakoutSection) => boolean;
   transformGroup?: (group: BreakoutGroup) => BreakoutGroup;
   buildChartSlices?: (
@@ -291,7 +292,14 @@ export function buildBreakoutBlocks(
   const secondaryGroups = applyGroupTransforms(secondary, "secondary", config);
 
   return [
-    buildBlock(primaryGroups, layout.headers, "current", config, "primary"),
+    buildBlock(
+      primaryGroups,
+      layout.headers,
+      "current",
+      config,
+      "primary",
+      config.primaryBlockTitle,
+    ),
     buildBlock(
       secondaryGroups,
       layout.headers,

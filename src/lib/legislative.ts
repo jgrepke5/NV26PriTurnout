@@ -66,6 +66,7 @@ const LEGISLATIVE_CONFIG: BreakoutTableConfig = {
     isMarkerRow(label, row, layout, (l) =>
       /non-competitive legislative districts with gop primaries/i.test(l),
     ),
+  primaryBlockTitle: "Competitive Legislative Districts",
   secondaryBlockTitle:
     "Districts Where Primary will Likely Determine Final Outcome",
   filterGroup: filterLegislativeGroup,

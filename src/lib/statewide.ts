@@ -21,7 +21,7 @@ const CURRENT_COLUMNS: ColumnSpec[] = [
   },
   {
     match: (h) => /'26\s*vr/i.test(h),
-    label: "2026 Active Voter Registration",
+    label: "2026 VR",
   },
   { match: (h) => /votes to date/i.test(h), label: "Votes to Date" },
   {

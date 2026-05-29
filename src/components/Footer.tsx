@@ -10,6 +10,10 @@ export function Footer({ showComparisonNote = false }: { showComparisonNote?: bo
           </p>
         ) : null}
         <p>
+          Voter registration statistics listed are active registered voters as of
+          May 28, 2026.
+        </p>
+        <p>
           This page refreshes its cache daily at noon Pacific. Percentages and vote
           totals reflect the spreadsheet at the time of the last sync.
         </p>
