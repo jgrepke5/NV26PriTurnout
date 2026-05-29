@@ -1,4 +1,4 @@
-import { DataSection } from "@/components/DataSection";
+import { LegislativeView } from "@/components/LegislativeView";
 import { ErrorPage } from "@/components/ErrorPage";
 import { PageShell } from "@/components/PageShell";
 import { getSheet, loadTurnoutData } from "@/lib/pages";
@@ -12,7 +12,7 @@ export default async function LegislativePage() {
 
     return (
       <PageShell fetchedAt={snapshot.fetchedAt}>
-        <DataSection sheet={legislative} />
+        <LegislativeView sheet={legislative} />
       </PageShell>
     );
   } catch (err) {
