@@ -20,13 +20,15 @@ export function CountyView({ sheet }: { sheet: SheetTable }) {
       <div className="county-blocks">
         {blocks.map((block) => (
           <section
-            key={block.title}
+            key={block.title ?? block.variant}
             className={`section data-block data-block--${block.variant}`}
           >
             <div className="container">
-              <header className="section-header">
-                <h3 className="section-title">{block.title}</h3>
-              </header>
+              {block.title ? (
+                <header className="section-header">
+                  <h3 className="section-title">{block.title}</h3>
+                </header>
+              ) : null}
               <DataTable
                 headers={block.headers}
                 rows={block.rows}

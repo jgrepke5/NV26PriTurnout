@@ -2,7 +2,7 @@ import { displayLabel } from "./format";
 import type { CellValue, SheetTable } from "./types";
 
 export interface CountyTableBlock {
-  title: string;
+  title?: string;
   headers: string[];
   rows: CellValue[][];
   rowClasses: string[];
@@ -37,13 +37,6 @@ interface CountyGroup {
   name: string;
   countyRow: CellValue[];
   partyRows: CellValue[][];
-}
-
-function isPaddingColumn(header: string, index: number, total: number): boolean {
-  const h = header.trim();
-  if (!h) return true;
-  if (/^column \d+$/i.test(h)) return true;
-  return index === total - 1 && !h;
 }
 
 function resolveLayout(sheet: SheetTable): CountyLayout {
@@ -133,12 +126,13 @@ function readGroup(
 function parseSection(
   rows: CellValue[][],
   start: number,
+  end: number,
   layout: CountyLayout,
 ): CountyGroup[] {
   const groups: CountyGroup[] = [];
   let i = start;
 
-  while (i < rows.length) {
+  while (i < end) {
     if (isRuralSectionMarker(rows[i], layout)) {
       i++;
       continue;
@@ -162,9 +156,10 @@ function splitSheetRows(
   layout: CountyLayout,
 ): { summary: CountyGroup[]; rural: CountyGroup[] } {
   const markerIdx = rows.findIndex((row) => isRuralSectionMarker(row, layout));
-  const summary = parseSection(rows, 0, layout);
+  const summaryEnd = markerIdx >= 0 ? markerIdx : rows.length;
+  const summary = parseSection(rows, 0, summaryEnd, layout);
   const ruralStart = markerIdx >= 0 ? markerIdx + 1 : rows.length;
-  const rural = parseSection(rows, ruralStart, layout);
+  const rural = parseSection(rows, ruralStart, rows.length, layout);
   return { summary, rural };
 }
 
@@ -192,9 +187,9 @@ function flattenGroup(group: CountyGroup): {
 
 function buildBlock(
   groups: CountyGroup[],
-  title: string,
   headers: string[],
   variant: CountyTableBlock["variant"],
+  title?: string,
 ): CountyTableBlock {
   const rows: CellValue[][] = [];
   const rowClasses: string[] = [];
@@ -213,12 +208,7 @@ export function buildCountyBlocks(sheet: SheetTable): CountyTableBlock[] {
   const { summary, rural } = splitSheetRows(sheet.rows, layout);
 
   return [
-    buildBlock(
-      summary,
-      "Clark, Washoe, Rural & Statewide Total",
-      layout.headers,
-      "current",
-    ),
-    buildBlock(rural, "Rural Counties", layout.headers, "rural"),
+    buildBlock(summary, layout.headers, "current"),
+    buildBlock(rural, layout.headers, "rural", "Rural County Breakdown"),
   ];
 }
