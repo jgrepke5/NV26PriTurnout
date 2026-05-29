@@ -15,7 +15,8 @@ export function SiteNav() {
 
   return (
     <nav className="site-nav" aria-label="Turnout breakdowns">
-      <div className="container site-nav-inner">
+      <div className="site-nav-scroll">
+        <div className="site-nav-inner">
         {TABS.map(({ href, label }) => {
           const active =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -30,6 +31,7 @@ export function SiteNav() {
             </Link>
           );
         })}
+        </div>
       </div>
     </nav>
   );
