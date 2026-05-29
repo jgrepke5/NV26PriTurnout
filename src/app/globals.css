@@ -17,7 +17,7 @@
   --block-historical: #6b4a1e;
   --block-primary-header-bg: #ebe8e2;
   --block-primary-header-border: #5c5348;
-  --nav-height: 3.1rem;
+  --nav-height: 2.45rem;
   --font-display: "Libre Baskerville", "Georgia", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", sans-serif;
   --max-width: 1120px;
@@ -363,8 +363,8 @@ a:hover {
   position: static;
   white-space: normal;
   vertical-align: middle;
-  height: 2.85rem;
-  box-sizing: border-box;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
   background: inherit;
 }
 
@@ -539,7 +539,7 @@ a:hover {
   padding: 0 0.75rem;
   border-bottom: 1px solid var(--rule);
   background: var(--paper-elevated);
-  overflow: hidden;
+  position: relative;
 }
 
 .data-group:last-child {
