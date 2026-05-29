@@ -250,12 +250,14 @@ a:hover {
 }
 
 .legislative-blocks .block-title-header,
-.congressional-blocks .block-title-header {
+.congressional-blocks .block-title-header,
+.commission-blocks .block-title-header {
   margin-bottom: 1.25rem;
 }
 
 .legislative-blocks .block-title-header .section-title,
-.congressional-blocks .block-title-header .section-title {
+.congressional-blocks .block-title-header .section-title,
+.commission-blocks .block-title-header .section-title {
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 

@@ -3,8 +3,14 @@ import type { SheetTable } from "@/lib/types";
 import { DataTable } from "./DataTable";
 import { TurnoutPieChart } from "./TurnoutPieChart";
 
-export function StatewideView({ sheet }: { sheet: SheetTable }) {
-  const blocks = buildStatewideBlocks(sheet);
+export function StatewideView({
+  sheet,
+  turnoutComparison,
+}: {
+  sheet: SheetTable;
+  turnoutComparison?: SheetTable | null;
+}) {
+  const blocks = buildStatewideBlocks(sheet, turnoutComparison);
 
   return (
     <div className="statewide-blocks">

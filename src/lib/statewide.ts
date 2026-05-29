@@ -1,4 +1,5 @@
 import { partySlicesFromRows, type PieSlice } from "./chart-data";
+import { buildNationwideComparisonBlock } from "./turnout-comparison";
 import type { CellValue, SheetTable } from "./types";
 
 export interface TableBlock {
@@ -98,8 +99,11 @@ function isTitleRow(label: string): boolean {
   );
 }
 
-export function buildStatewideBlocks(sheet: SheetTable): TableBlock[] {
-  return [
+export function buildStatewideBlocks(
+  sheet: SheetTable,
+  turnoutComparison?: SheetTable | null,
+): TableBlock[] {
+  const blocks: TableBlock[] = [
     projectBlock(sheet, CURRENT_COLUMNS, "2026 Turnout by Party", "current"),
     projectBlock(
       sheet,
@@ -108,4 +112,11 @@ export function buildStatewideBlocks(sheet: SheetTable): TableBlock[] {
       "historical",
     ),
   ];
+
+  if (turnoutComparison) {
+    const nationwide = buildNationwideComparisonBlock(turnoutComparison);
+    if (nationwide) blocks.push(nationwide);
+  }
+
+  return blocks;
 }

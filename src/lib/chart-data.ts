@@ -19,6 +19,13 @@ export const COUNTY_CHART_COLORS = {
   rurals: "#3d6b3d",
 } as const;
 
+export const CONGRESSIONAL_CHART_COLORS: Record<string, string> = {
+  cd1: "#1e4d6b",
+  cd2: "#6b4a1e",
+  cd3: "#8b1e1e",
+  cd4: "#3d6b3d",
+};
+
 export function parseVoteCount(cell: CellValue): number {
   if (cell == null || cell === "") return 0;
   const n = Number(String(cell).replace(/,/g, "").trim());
@@ -69,28 +76,55 @@ export function partySlicesFromRows(
   return slices;
 }
 
-export function countyTotalRegionSlices(
+export function peerHeaderSlices(
   headers: string[],
   peerRows: { name: string; headerRow: CellValue[] }[],
-  regionNames: string[],
+  names: string[],
+  colors: Record<string, string>,
 ): PieSlice[] {
   const votesIdx = votesColumnIndex(headers);
   if (votesIdx < 0) return [];
 
   const slices: PieSlice[] = [];
-  for (const region of regionNames) {
+  for (const name of names) {
     const peer = peerRows.find(
-      (p) => p.name.toLowerCase() === region.toLowerCase(),
+      (p) => p.name.toLowerCase() === name.toLowerCase(),
     );
     if (!peer) continue;
     const value = parseVoteCount(peer.headerRow[votesIdx]);
     if (value <= 0) continue;
-    const colorKey = region.toLowerCase() as keyof typeof COUNTY_CHART_COLORS;
+    const colorKey = name.toLowerCase().replace(/\s+/g, "");
     slices.push({
-      label: region,
+      label: name,
       value,
-      color: COUNTY_CHART_COLORS[colorKey] ?? "#888",
+      color: colors[colorKey] ?? "#888",
     });
   }
   return slices;
+}
+
+export function countyTotalRegionSlices(
+  headers: string[],
+  peerRows: { name: string; headerRow: CellValue[] }[],
+  regionNames: string[],
+): PieSlice[] {
+  return peerHeaderSlices(
+    headers,
+    peerRows,
+    regionNames,
+    COUNTY_CHART_COLORS,
+  );
+}
+
+export function congressionalTotalDistrictSlices(
+  headers: string[],
+  peerRows: { name: string; headerRow: CellValue[] }[],
+  districtNames: string[],
+): PieSlice[] {
+  return peerHeaderSlices(
+    headers,
+    peerRows,
+    districtNames,
+    CONGRESSIONAL_CHART_COLORS,
+  );
 }
