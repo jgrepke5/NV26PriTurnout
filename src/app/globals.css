@@ -495,7 +495,6 @@ a:hover {
 
 .data-table tbody tr.row-sub td:first-child {
   padding-left: 1.75rem;
-  white-space: normal;
 }
 
 .data-table tbody tr.row-sub td:first-child::before {
@@ -505,27 +504,17 @@ a:hover {
 }
 
 .row-label-stack {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 0.12rem;
-  line-height: 1.2;
   white-space: normal;
 }
 
-.row-label-main {
-  display: block;
-  white-space: nowrap;
-}
-
 .row-label-note {
-  display: block;
   font-size: 0.82em;
   font-style: italic;
   color: var(--ink-muted);
   font-weight: 400;
-  white-space: normal;
-  overflow-wrap: break-word;
 }
 
 .row-label-np-split {
