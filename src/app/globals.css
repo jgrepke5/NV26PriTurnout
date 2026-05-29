@@ -22,6 +22,8 @@
   --font-display: "Libre Baskerville", "Georgia", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", sans-serif;
   --max-width: 1120px;
+  --group-chart-width: 10.5rem;
+  --group-chart-gap: 1.25rem;
 }
 
 *,
@@ -372,7 +374,11 @@ a:hover {
   border-bottom: 2px solid var(--rule);
 }
 
-.grouped-table-sticky-head .data-table {
+.grouped-table-sticky-head-row.data-group {
+  border-bottom: none;
+}
+
+.grouped-table-sticky-head .data-group-table .data-table {
   min-width: 640px;
   table-layout: fixed;
   margin-bottom: 0;
@@ -569,9 +575,9 @@ a:hover {
 
 .data-group {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 10.5rem;
+  grid-template-columns: minmax(0, 1fr) var(--group-chart-width);
   align-items: start;
-  gap: 0 1.25rem;
+  gap: 0 var(--group-chart-gap);
   padding: 0 0.75rem;
   border-bottom: 1px solid var(--rule);
   background: var(--paper-elevated);
@@ -619,7 +625,7 @@ a:hover {
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  width: 10.5rem;
+  width: var(--group-chart-width);
 }
 
 .turnout-pie-caption {
@@ -684,6 +690,10 @@ a:hover {
   }
 
   .data-group-chart--empty {
+    display: none;
+  }
+
+  .grouped-table-sticky-head-spacer {
     display: none;
   }
 }

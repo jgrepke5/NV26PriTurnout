@@ -30,10 +30,18 @@ export function GroupedDataTable({
   return (
     <div className={`table-wrap table-wrap--${variant ?? "default"} grouped-table`}>
       <div className="grouped-table-sticky-head">
-        <table className="data-table">
-          <TableColGroup headers={headers} />
-          <TableHeadRow headers={headers} />
-        </table>
+        <div className="data-group grouped-table-sticky-head-row">
+          <div className="data-group-table">
+            <table className="data-table">
+              <TableColGroup headers={headers} />
+              <TableHeadRow headers={headers} />
+            </table>
+          </div>
+          <div
+            className="data-group-chart data-group-chart--empty grouped-table-sticky-head-spacer"
+            aria-hidden
+          />
+        </div>
       </div>
       {groups.map((group) => (
         <div key={group.name} className="data-group">
