@@ -1,3 +1,4 @@
+import { partySlicesFromRows, type PieSlice } from "./chart-data";
 import type { CellValue, SheetTable } from "./types";
 
 export interface TableBlock {
@@ -5,6 +6,7 @@ export interface TableBlock {
   headers: string[];
   rows: CellValue[][];
   variant: "current" | "historical";
+  chartSlices?: PieSlice[];
 }
 
 type ColumnSpec = {
@@ -81,7 +83,11 @@ function projectBlock(
     })
     .map((row) => indices.map((i) => row[i] ?? null));
 
-  return { title, headers, rows, variant };
+  const block: TableBlock = { title, headers, rows, variant };
+  if (variant === "current") {
+    block.chartSlices = partySlicesFromRows(headers, rows);
+  }
+  return block;
 }
 
 function isTitleRow(label: string): boolean {

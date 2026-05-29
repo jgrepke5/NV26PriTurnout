@@ -1,6 +1,6 @@
 import { buildLegislativeBlocks } from "@/lib/legislative";
 import type { SheetTable } from "@/lib/types";
-import { DataTable } from "./DataTable";
+import { GroupedDataTable } from "./GroupedDataTable";
 
 const INTRO =
   "Turnout and voting method in competitive legislative districts, with party breakdowns nested under each district total.";
@@ -29,10 +29,9 @@ export function LegislativeView({ sheet }: { sheet: SheetTable }) {
                   <h3 className="section-title">{block.title}</h3>
                 </header>
               ) : null}
-              <DataTable
+              <GroupedDataTable
                 headers={block.headers}
-                rows={block.rows}
-                rowClasses={block.rowClasses}
+                groups={block.groups}
                 variant={block.variant}
               />
             </div>

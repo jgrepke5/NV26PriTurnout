@@ -1,11 +1,21 @@
+import {
+  countyTotalRegionSlices,
+  partySlicesFromRows,
+  type PieSlice,
+} from "./chart-data";
 import { displayLabel } from "./format";
 import type { CellValue, SheetTable } from "./types";
+export interface DataGroup {
+  name: string;
+  rows: CellValue[][];
+  rowClasses: string[];
+  chartSlices: PieSlice[];
+}
 
 export interface BreakoutTableBlock {
   title?: string;
   headers: string[];
-  rows: CellValue[][];
-  rowClasses: string[];
+  groups: DataGroup[];
   variant: "current" | "rural";
 }
 
@@ -35,6 +45,14 @@ export type BreakoutTableConfig = {
   secondaryBlockTitle: string;
   filterGroup?: (group: BreakoutGroup, section: BreakoutSection) => boolean;
   transformGroup?: (group: BreakoutGroup) => BreakoutGroup;
+  buildChartSlices?: (
+    group: BreakoutGroup,
+    context: {
+      allGroups: BreakoutGroup[];
+      section: BreakoutSection;
+      headers: string[];
+    },
+  ) => PieSlice[];
 };
 
 interface BreakoutLayout {
@@ -225,22 +243,35 @@ function applyGroupTransforms(
     .map((g) => config.transformGroup?.(g) ?? g);
 }
 
+function defaultChartSlices(
+  group: BreakoutGroup,
+  headers: string[],
+): PieSlice[] {
+  return partySlicesFromRows(headers, group.partyRows);
+}
+
 function buildBlock(
   groups: BreakoutGroup[],
   headers: string[],
   variant: BreakoutTableBlock["variant"],
+  config: BreakoutTableConfig,
+  section: BreakoutSection,
   title?: string,
 ): BreakoutTableBlock {
-  const rows: CellValue[][] = [];
-  const rowClasses: string[] = [];
-
-  for (const group of groups) {
+  const displayGroups: DataGroup[] = groups.map((group) => {
     const flat = flattenGroup(group);
-    rows.push(...flat.rows);
-    rowClasses.push(...flat.rowClasses);
-  }
+    const chartSlices =
+      config.buildChartSlices?.(group, { allGroups: groups, section, headers }) ??
+      defaultChartSlices(group, headers);
+    return {
+      name: group.name,
+      rows: flat.rows,
+      rowClasses: flat.rowClasses,
+      chartSlices,
+    };
+  });
 
-  return { title, headers, rows, rowClasses, variant };
+  return { title, headers, groups: displayGroups, variant };
 }
 
 function isEmptyDataRow(row: CellValue[], layout: BreakoutLayout): boolean {
@@ -256,20 +287,22 @@ export function buildBreakoutBlocks(
   const layout = resolveLayout(sheet, config);
   const { primary, secondary } = splitSheetRows(sheet.rows, layout, config);
 
+  const primaryGroups = applyGroupTransforms(primary, "primary", config);
+  const secondaryGroups = applyGroupTransforms(secondary, "secondary", config);
+
   return [
+    buildBlock(primaryGroups, layout.headers, "current", config, "primary"),
     buildBlock(
-      applyGroupTransforms(primary, "primary", config),
-      layout.headers,
-      "current",
-    ),
-    buildBlock(
-      applyGroupTransforms(secondary, "secondary", config),
+      secondaryGroups,
       layout.headers,
       "rural",
+      config,
+      "secondary",
       config.secondaryBlockTitle,
     ),
   ];
 }
+
 
 export function isMarkerRow(
   label: string,

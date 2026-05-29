@@ -4,7 +4,8 @@ import {
   type BreakoutTableBlock,
   type BreakoutTableConfig,
 } from "./breakout-table";
-import type { CellValue, SheetTable } from "./types";
+import { countyTotalRegionSlices, partySlicesFromRows } from "./chart-data";
+import type { SheetTable } from "./types";
 
 export type CountyTableBlock = BreakoutTableBlock;
 
@@ -15,6 +16,16 @@ const COUNTY_CONFIG: BreakoutTableConfig = {
   isSectionMarker: (label, row, layout) =>
     isMarkerRow(label, row, layout, (l) => l.toUpperCase() === "RURALS"),
   secondaryBlockTitle: "Rural County Breakdown",
+  buildChartSlices: (group, { allGroups, section, headers }) => {
+    if (section === "primary" && group.name.toLowerCase() === "total") {
+      return countyTotalRegionSlices(headers, allGroups, [
+        "Clark",
+        "Washoe",
+        "Rurals",
+      ]);
+    }
+    return partySlicesFromRows(headers, group.partyRows);
+  },
 };
 
 export function buildCountyBlocks(sheet: SheetTable): CountyTableBlock[] {

@@ -1,6 +1,7 @@
 import { buildStatewideBlocks } from "@/lib/statewide";
 import type { SheetTable } from "@/lib/types";
 import { DataTable } from "./DataTable";
+import { TurnoutPieChart } from "./TurnoutPieChart";
 
 export function StatewideView({ sheet }: { sheet: SheetTable }) {
   const blocks = buildStatewideBlocks(sheet);
@@ -16,11 +17,26 @@ export function StatewideView({ sheet }: { sheet: SheetTable }) {
             <header className="section-header">
               <h2 className="section-title">{block.title}</h2>
             </header>
-            <DataTable
-              headers={block.headers}
-              rows={block.rows}
-              variant={block.variant}
-            />
+            {block.chartSlices && block.chartSlices.length > 0 ? (
+              <div className="data-block-layout">
+                <div className="data-block-table">
+                  <DataTable
+                    headers={block.headers}
+                    rows={block.rows}
+                    variant={block.variant}
+                  />
+                </div>
+                <aside className="data-block-chart">
+                  <TurnoutPieChart slices={block.chartSlices} />
+                </aside>
+              </div>
+            ) : (
+              <DataTable
+                headers={block.headers}
+                rows={block.rows}
+                variant={block.variant}
+              />
+            )}
           </div>
         </section>
       ))}
