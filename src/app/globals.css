@@ -351,17 +351,34 @@ a:hover {
   display: block;
 }
 
-.data-group-thead th {
+.data-group-thead tr {
   position: sticky;
   top: var(--nav-height);
-  z-index: 6;
-  white-space: normal;
-  vertical-align: bottom;
+  z-index: 5;
+  background: var(--block-primary-header-bg);
   box-shadow: 0 1px 0 var(--rule);
 }
 
-.data-group-thead th:first-child {
+.data-group-thead th {
+  position: static;
+  white-space: normal;
   vertical-align: middle;
+  height: 2.85rem;
+  box-sizing: border-box;
+  background: inherit;
+}
+
+.th-group-name {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+}
+
+.table-wrap--rural .data-group-thead tr {
+  background: #f3ebe0;
 }
 
 .table-wrap--current .data-group-thead th {
@@ -522,6 +539,7 @@ a:hover {
   padding: 0 0.75rem;
   border-bottom: 1px solid var(--rule);
   background: var(--paper-elevated);
+  overflow: hidden;
 }
 
 .data-group:last-child {
@@ -531,7 +549,7 @@ a:hover {
 .data-group-table {
   grid-column: 1;
   min-width: 0;
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 .data-group-table .data-table {
@@ -610,6 +628,10 @@ a:hover {
 }
 
 @media (max-width: 720px) {
+  .grouped-table {
+    overflow-x: auto;
+  }
+
   .data-block-layout {
     flex-direction: column;
   }

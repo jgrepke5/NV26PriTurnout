@@ -31,6 +31,7 @@ export function GroupedDataTable({
               <TableHeadRow
                 headers={[group.name, ...headers.slice(1)]}
                 sticky
+                groupNameColumn
               />
               <tbody>
                 {group.rows.map((row, ri) => (

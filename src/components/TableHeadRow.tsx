@@ -3,9 +3,11 @@ import { headerLines, isNumericHeader } from "@/lib/table-headers";
 export function TableHeadRow({
   headers,
   sticky = false,
+  groupNameColumn = false,
 }: {
   headers: string[];
   sticky?: boolean;
+  groupNameColumn?: boolean;
 }) {
   return (
     <thead className={sticky ? "data-group-thead" : undefined}>
@@ -13,9 +15,14 @@ export function TableHeadRow({
         {headers.map((h, i) => (
           <th
             key={`${h}-${i}`}
-            className={isNumericHeader(h, i) ? "num" : undefined}
+            className={[
+              isNumericHeader(h, i) ? "num" : undefined,
+              groupNameColumn && i === 0 ? "th-group-name" : undefined,
+            ]
+              .filter(Boolean)
+              .join(" ")}
           >
-            <HeaderLabel label={h} />
+            <HeaderLabel label={h} isGroupName={groupNameColumn && i === 0} />
           </th>
         ))}
       </tr>
@@ -23,7 +30,17 @@ export function TableHeadRow({
   );
 }
 
-function HeaderLabel({ label }: { label: string }) {
+function HeaderLabel({
+  label,
+  isGroupName = false,
+}: {
+  label: string;
+  isGroupName?: boolean;
+}) {
+  if (isGroupName) {
+    return <span className="th-group-name">{label}</span>;
+  }
+
   const lines = headerLines(label);
   if (lines.length === 1) return <>{lines[0]}</>;
 
