@@ -368,6 +368,13 @@ a:hover {
   line-height: 1.15;
 }
 
+.table-wrap--wrap-headers .th-line--wrap {
+  display: block;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 6.5rem;
+}
+
 .data-block-footnote {
   margin: 1rem 0 0;
   max-width: 42rem;

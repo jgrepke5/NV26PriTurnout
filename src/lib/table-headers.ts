@@ -1,8 +1,8 @@
-/** Split column labels onto two lines so headers align with chart layout */
+/** Column header text split across up to three lines for narrow columns */
 export function headerLines(label: string): string[] {
-  const known: Record<string, [string, string]> = {
-    County: ["County", ""],
-    District: ["District", ""],
+  const known: Record<string, string[]> = {
+    County: ["County"],
+    District: ["District"],
     "Party Affiliation": ["Party", "Affiliation"],
     "2026 VR": ["2026", "VR"],
     "Early Voted": ["Early", "Voted"],
@@ -18,14 +18,12 @@ export function headerLines(label: string): string[] {
     "% to 2014 Turnout": ["% to 2014", "Turnout"],
     "% to 2022 Turnout": ["% to 2022", "Turnout"],
     "National Average Turnout": ["National Average", "Turnout"],
-    "NV TO % to Date": ["NV TO %", "to Date"],
+    "NV Turnout % to Date": ["NV Turnout % to Date"],
     "% to Natl Avg": ["% to Natl", "Avg"],
   };
 
-  const pair = known[label];
-  if (pair) {
-    return pair[1] ? [pair[0], pair[1]] : [pair[0]];
-  }
+  const lines = known[label];
+  if (lines) return lines;
 
   return [label];
 }

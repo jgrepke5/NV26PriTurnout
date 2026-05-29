@@ -31,13 +31,19 @@ export function parseTurnoutComparisonGviz(raw: string): SheetTable {
 export const NATIONWIDE_COMPARISON_FOOTNOTE =
   "States used for Nationwide Comparison include only those that report partisan voter registration and have completed their 2026 primary election. Early voting metrics are not included as states have disparate rules governing early voting not necessarily applicable to Nevada or one another.";
 
+function normalizeComparisonHeaderLabel(header: string): string {
+  const trimmed = header.trim();
+  if (/^nv\s*to\s*%/i.test(trimmed)) return "NV Turnout % to Date";
+  return trimmed || header;
+}
+
 function normalizeComparisonHeaders(headers: string[]): string[] {
   return headers.map((header, i) => {
     const trimmed = header.trim();
     if (i === 0 || /^column\s*1$/i.test(trimmed) || trimmed === "Category") {
       return "Party Affiliation";
     }
-    return trimmed || header;
+    return normalizeComparisonHeaderLabel(header);
   });
 }
 

@@ -42,12 +42,17 @@ function HeaderLabel({
   }
 
   const lines = headerLines(label);
-  if (lines.length === 1) return <>{lines[0]}</>;
+  if (lines.length === 1) {
+    return <span className="th-line th-line--wrap">{lines[0]}</span>;
+  }
 
   return (
     <span className="th-lines">
-      <span className="th-line">{lines[0]}</span>
-      <span className="th-line">{lines[1]}</span>
+      {lines.map((line) => (
+        <span key={line} className="th-line">
+          {line}
+        </span>
+      ))}
     </span>
   );
 }
