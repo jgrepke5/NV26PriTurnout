@@ -7,9 +7,11 @@ import { UpdateBanner } from "./UpdateBanner";
 export function PageShell({
   fetchedAt,
   children,
+  showComparisonNote = false,
 }: {
   fetchedAt: string;
   children: ReactNode;
+  showComparisonNote?: boolean;
 }) {
   return (
     <>
@@ -17,7 +19,7 @@ export function PageShell({
       <SiteNav />
       <UpdateBanner fetchedAt={fetchedAt} />
       <main>{children}</main>
-      <Footer />
+      <Footer showComparisonNote={showComparisonNote} />
     </>
   );
 }

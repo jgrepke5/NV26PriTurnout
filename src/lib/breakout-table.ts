@@ -33,6 +33,8 @@ export type BreakoutTableConfig = {
   labelHeader: string;
   isSectionMarker: (label: string, row: CellValue[], layout: BreakoutLayout) => boolean;
   secondaryBlockTitle: string;
+  filterGroup?: (group: BreakoutGroup, section: BreakoutSection) => boolean;
+  transformGroup?: (group: BreakoutGroup) => BreakoutGroup;
 };
 
 interface BreakoutLayout {
@@ -41,11 +43,13 @@ interface BreakoutLayout {
   headers: string[];
 }
 
-interface BreakoutGroup {
+export interface BreakoutGroup {
   name: string;
   headerRow: CellValue[];
   partyRows: CellValue[][];
 }
+
+export type BreakoutSection = "primary" | "secondary";
 
 function resolveLayout(
   sheet: SheetTable,
@@ -211,6 +215,16 @@ function flattenGroup(group: BreakoutGroup): {
   return { rows, rowClasses };
 }
 
+function applyGroupTransforms(
+  groups: BreakoutGroup[],
+  section: BreakoutSection,
+  config: BreakoutTableConfig,
+): BreakoutGroup[] {
+  return groups
+    .filter((g) => config.filterGroup?.(g, section) ?? true)
+    .map((g) => config.transformGroup?.(g) ?? g);
+}
+
 function buildBlock(
   groups: BreakoutGroup[],
   headers: string[],
@@ -243,9 +257,13 @@ export function buildBreakoutBlocks(
   const { primary, secondary } = splitSheetRows(sheet.rows, layout, config);
 
   return [
-    buildBlock(primary, layout.headers, "current"),
     buildBlock(
-      secondary,
+      applyGroupTransforms(primary, "primary", config),
+      layout.headers,
+      "current",
+    ),
+    buildBlock(
+      applyGroupTransforms(secondary, "secondary", config),
       layout.headers,
       "rural",
       config.secondaryBlockTitle,
