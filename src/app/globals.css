@@ -351,12 +351,16 @@ a:hover {
   display: block;
 }
 
-.data-group-thead tr {
+.data-group-thead tr.data-group-thead-sticky {
   position: sticky;
   top: var(--nav-height);
   z-index: 5;
   background: var(--block-primary-header-bg);
   box-shadow: 0 1px 0 var(--rule);
+}
+
+.data-group-thead tr {
+  background: var(--block-primary-header-bg);
 }
 
 .data-group-thead th {
@@ -377,7 +381,8 @@ a:hover {
   line-height: 1.15;
 }
 
-.table-wrap--rural .data-group-thead tr {
+.table-wrap--rural .data-group-thead tr,
+.table-wrap--rural .data-group-thead tr.data-group-thead-sticky {
   background: #f3ebe0;
 }
 

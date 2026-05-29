@@ -30,8 +30,8 @@ export function GroupedDataTable({
               </colgroup>
               <TableHeadRow
                 headers={[group.name, ...headers.slice(1)]}
-                sticky
                 groupNameColumn
+                sectionHeader
               />
               <tbody>
                 {group.rows.map((row, ri) => (
