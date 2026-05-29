@@ -670,8 +670,21 @@ a:hover {
 }
 
 @media (max-width: 720px) {
-  .grouped-table {
+  .table-wrap {
     overflow-x: auto;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-wrap.grouped-table {
+    overflow-x: auto;
+  }
+
+  .data-block-table {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .data-block-layout {
@@ -680,6 +693,16 @@ a:hover {
 
   .data-group {
     grid-template-columns: 1fr;
+    min-width: 640px;
+  }
+
+  .data-group-table {
+    min-width: 640px;
+    overflow-x: visible;
+  }
+
+  .grouped-table-sticky-head-row.data-group {
+    min-width: 640px;
   }
 
   .data-group-chart,
