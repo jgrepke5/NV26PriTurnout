@@ -1,4 +1,4 @@
-import { isSubRow } from "@/lib/format";
+import { displayLabel, isSubRow } from "@/lib/format";
 import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
 import { RowLabel } from "./RowLabel";

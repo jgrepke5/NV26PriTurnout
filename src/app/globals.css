@@ -15,6 +15,8 @@
   --np-border: #6b5b8a;
   --block-current: #1e4d6b;
   --block-historical: #6b4a1e;
+  --block-primary-header-bg: #ebe8e2;
+  --block-primary-header-border: #5c5348;
   --nav-height: 3.1rem;
   --font-display: "Libre Baskerville", "Georgia", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", sans-serif;
@@ -358,9 +360,18 @@ a:hover {
   box-shadow: 0 1px 0 var(--rule);
 }
 
+.data-group-thead th:first-child {
+  vertical-align: middle;
+}
+
+.table-wrap--current .data-group-thead th {
+  background: var(--block-primary-header-bg);
+  color: var(--ink);
+}
+
 .table-wrap--current .data-table th {
-  background: #e3edf3;
-  color: var(--block-current);
+  background: var(--block-primary-header-bg);
+  color: var(--ink);
 }
 
 .table-wrap--historical .data-table th {
@@ -439,17 +450,23 @@ a:hover {
   white-space: normal;
 }
 
-.data-table tbody tr.row-county-header {
+.table-wrap--current .data-table tbody tr.row-county-header {
   font-weight: 700;
-  background: #e3edf3;
+  background: var(--block-primary-header-bg);
 }
 
-.data-table tbody tr.row-county-header td {
-  border-top: 2px solid var(--block-current);
+.table-wrap--current .data-table tbody tr.row-county-header td {
+  border-top: 2px solid var(--block-primary-header-border);
+  vertical-align: middle;
 }
 
-.data-table tbody tr.row-county-header td:first-child {
-  border-left: 4px solid var(--block-current);
+.table-wrap--current .data-table tbody tr.row-county-header td:first-child {
+  border-left: 4px solid var(--block-primary-header-border);
+}
+
+.table-wrap--rural .data-group-thead th {
+  background: #f3ebe0;
+  color: var(--block-historical);
 }
 
 .table-wrap--rural .data-table tbody tr.row-county-header {
@@ -458,6 +475,7 @@ a:hover {
 
 .table-wrap--rural .data-table tbody tr.row-county-header td {
   border-top-color: var(--block-historical);
+  vertical-align: middle;
 }
 
 .table-wrap--rural .data-table tbody tr.row-county-header td:first-child {
