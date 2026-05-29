@@ -1,6 +1,7 @@
 import { displayLabel } from "@/lib/format";
 
 const NONPARTISAN_LABEL = /^non-partisan\s*\/\s*3rd\s*party$/i;
+const PARTY_PRIMARY_LABEL = /^(Democrat|Republican)\s*\((.+)\)$/i;
 
 export function RowLabel({ text }: { text: string }) {
   const trimmed = displayLabel(text);
@@ -14,14 +15,15 @@ export function RowLabel({ text }: { text: string }) {
     );
   }
 
-  const match = trimmed.match(/^Republican\s*\((.+)\)$/i);
+  const partyMatch = trimmed.match(PARTY_PRIMARY_LABEL);
+  if (partyMatch) {
+    return (
+      <span className="row-label-stack">
+        <span className="row-label-main">{partyMatch[1]}</span>
+        <span className="row-label-note">({partyMatch[2]})</span>
+      </span>
+    );
+  }
 
-  if (!match) return <>{trimmed}</>;
-
-  return (
-    <span className="row-label-stack">
-      <span className="row-label-main">Republican</span>
-      <span className="row-label-note">({match[1]})</span>
-    </span>
-  );
+  return <>{trimmed}</>;
 }
