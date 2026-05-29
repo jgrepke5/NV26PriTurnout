@@ -1,4 +1,8 @@
 import { parseGvizJson, toSheetTable } from "./parse";
+import {
+  COMPARISON_RANGE,
+  parseTurnoutComparisonGviz,
+} from "./turnout-comparison";
 import type { SheetMeta, TurnoutSnapshot } from "./types";
 
 const SPREADSHEET_ID =
@@ -28,17 +32,26 @@ export async function discoverSheets(): Promise<SheetMeta[]> {
   return sheets.filter((s) => s.name.trim().toLowerCase() !== "data");
 }
 
-async function fetchSheetGviz(gid: string): Promise<string> {
-  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&gid=${gid}`;
+async function fetchSheetGviz(gid: string, range?: string): Promise<string> {
+  const rangeParam = range ? `&range=${encodeURIComponent(range)}` : "";
+  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&gid=${gid}${rangeParam}`;
   const res = await fetch(url, { next: { revalidate: 86400 } });
   if (!res.ok) throw new Error(`Failed to fetch sheet gid=${gid} (${res.status})`);
   return res.text();
+}
+
+function isTurnoutComparisonSheet(name: string): boolean {
+  return name.trim().toLowerCase() === "turnout comparison by state";
 }
 
 export async function fetchTurnoutSnapshot(): Promise<TurnoutSnapshot> {
   const meta = await discoverSheets();
   const sheets = await Promise.all(
     meta.map(async ({ name, gid }) => {
+      if (isTurnoutComparisonSheet(name)) {
+        const raw = await fetchSheetGviz(gid, COMPARISON_RANGE);
+        return parseTurnoutComparisonGviz(raw);
+      }
       const raw = await fetchSheetGviz(gid);
       const { headers, formatted } = parseGvizJson(raw);
       return toSheetTable(name, headers, formatted);

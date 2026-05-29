@@ -39,16 +39,6 @@ function isDistrictGroup(name: string): boolean {
   return /^CD\d+/i.test(displayLabel(name));
 }
 
-function partyRowClass(label: string): string {
-  const party = displayLabel(label).toLowerCase();
-  if (party.startsWith("republican")) return "row-republican";
-  if (party.startsWith("democrat")) return "row-democrat";
-  if (party.includes("non-partisan") || party.includes("3rd party")) {
-    return "row-nonpartisan";
-  }
-  return "";
-}
-
 function sumNumericColumns(rows: CellValue[][], colCount: number): CellValue[] {
   const sums: number[] = Array(colCount).fill(0);
   for (const row of rows) {
@@ -59,37 +49,63 @@ function sumNumericColumns(rows: CellValue[][], colCount: number): CellValue[] {
   return sums.map((n, i) => (i === 0 ? null : n > 0 ? n : null));
 }
 
+function formatPct(ratio: number): string {
+  return `${(ratio * 100).toFixed(2)}%`;
+}
+
+function computeGrandTotalRow(
+  districtRows: CellValue[][],
+  headers: string[],
+): CellValue[] {
+  const colCount = headers.length;
+  const sums = sumNumericColumns(districtRows, colCount);
+  const row: CellValue[] = ["Total", ...sums.slice(1).map((v) => v ?? null)];
+
+  const vrIdx = headers.indexOf("2026 VR");
+  const earlyIdx = headers.indexOf("Early Voted");
+  const mailIdx = headers.indexOf("Mail Voted");
+  const votesIdx = headers.indexOf("Total Votes");
+  const earlyPctIdx = headers.indexOf("% Early Votes");
+  const mailPctIdx = headers.indexOf("% Mail Votes");
+  const turnoutIdx = headers.indexOf("Turnout %");
+
+  const vr = vrIdx >= 0 ? parseVoteCount(row[vrIdx]) : 0;
+  const early = earlyIdx >= 0 ? parseVoteCount(row[earlyIdx]) : 0;
+  const mail = mailIdx >= 0 ? parseVoteCount(row[mailIdx]) : 0;
+  const votes = votesIdx >= 0 ? parseVoteCount(row[votesIdx]) : 0;
+  const voteMethods = early + mail;
+
+  if (earlyPctIdx >= 0 && voteMethods > 0) {
+    row[earlyPctIdx] = formatPct(early / voteMethods);
+  }
+  if (mailPctIdx >= 0 && voteMethods > 0) {
+    row[mailPctIdx] = formatPct(mail / voteMethods);
+  }
+  if (turnoutIdx >= 0 && vr > 0) {
+    row[turnoutIdx] = formatPct(votes / vr);
+  }
+
+  return row;
+}
+
 function appendTotalGroup(block: BreakoutTableBlock): BreakoutTableBlock {
   const districts = block.groups.filter((g) => isDistrictGroup(g.name));
   const hasTotal = block.groups.some((g) => g.name.toLowerCase() === "total");
   if (hasTotal || districts.length === 0) return block;
 
-  const colCount = block.headers.length;
-  const headerRows = districts.map((d) => d.rows[0]);
-  const headerSums = sumNumericColumns(headerRows, colCount);
-  const headerRow: CellValue[] = ["Total", ...headerSums.slice(1)];
+  const rows: CellValue[][] = [];
+  const rowClasses: string[] = [];
+  const districtHeaderRows: CellValue[][] = [];
 
-  const partyByLabel = new Map<string, CellValue[][]>();
   for (const district of districts) {
-    for (const row of district.rows.slice(1)) {
-      const label = displayLabel(String(row[0] ?? ""));
-      if (!label) continue;
-      const existing = partyByLabel.get(label) ?? [];
-      existing.push(row);
-      partyByLabel.set(label, existing);
-    }
+    const headerRow = [...district.rows[0]];
+    rows.push(headerRow);
+    rowClasses.push("row-county-header");
+    districtHeaderRows.push(headerRow);
   }
 
-  const rows: CellValue[][] = [headerRow];
-  const rowClasses = ["row-county-header row-total"];
-
-  for (const [label, partyRows] of partyByLabel) {
-    const sums = sumNumericColumns(partyRows, colCount);
-    rows.push([label, ...sums.slice(1)]);
-    rowClasses.push(
-      ["row-sub", partyRowClass(label)].filter(Boolean).join(" "),
-    );
-  }
+  rows.push(computeGrandTotalRow(districtHeaderRows, block.headers));
+  rowClasses.push("row-county-header row-total");
 
   const chartSlices = congressionalTotalDistrictSlices(
     block.headers,

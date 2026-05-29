@@ -10,7 +10,7 @@ function isNumericColumn(headers: string[], colIndex: number): boolean {
 
 function partyRowClass(label: string): string {
   const party = displayLabel(label).toLowerCase();
-  if (party === "total") return "row-total";
+  if (party === "total" || party === "statewide") return "row-total";
   if (party.startsWith("republican")) return "row-republican";
   if (party.startsWith("democrat")) return "row-democrat";
   if (party.includes("non-partisan") || party.includes("3rd party")) {

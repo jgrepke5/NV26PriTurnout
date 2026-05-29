@@ -554,16 +554,30 @@ a:hover {
 }
 
 .table-wrap--rural .data-table tbody tr.row-county-header {
+  font-weight: 700;
   background: #f3ebe0;
 }
 
 .table-wrap--rural .data-table tbody tr.row-county-header td {
-  border-top-color: var(--block-historical);
+  border-top: 2px solid var(--block-historical);
   vertical-align: middle;
 }
 
 .table-wrap--rural .data-table tbody tr.row-county-header td:first-child {
-  border-left-color: var(--block-historical);
+  border-left: 4px solid var(--block-historical);
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header.row-total {
+  background: var(--accent-soft);
+  border-top: 2px solid var(--accent);
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header.row-total td {
+  border-top-color: var(--accent);
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header.row-total td:first-child {
+  border-left-color: var(--accent);
 }
 
 .data-table td.num {
