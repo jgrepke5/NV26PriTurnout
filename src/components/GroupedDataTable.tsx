@@ -1,7 +1,7 @@
 import type { DataGroup } from "@/lib/breakout-table";
-import { displayLabel } from "@/lib/format";
 import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
+import { RowLabel } from "./RowLabel";
 import { TableHeadRow } from "./TableHeadRow";
 import { TurnoutPieChart } from "./TurnoutPieChart";
 
@@ -28,7 +28,10 @@ export function GroupedDataTable({
                   <col key={h} className="col-data" />
                 ))}
               </colgroup>
-              <TableHeadRow headers={headers} sticky />
+              <TableHeadRow
+                headers={[group.name, ...headers.slice(1)]}
+                sticky
+              />
               <tbody>
                 {group.rows.map((row, ri) => (
                   <DataTableBodyRow
@@ -76,7 +79,7 @@ function DataTableBodyRow({
             className={isNum ? "num" : undefined}
             data-label={headers[ci]}
           >
-            {ci === labelCol ? displayLabel(text) : text}
+            {ci === labelCol ? <RowLabel text={text} /> : text}
           </td>
         );
       })}

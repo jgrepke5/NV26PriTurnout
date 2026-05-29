@@ -421,6 +421,24 @@ a:hover {
   font-weight: 400;
 }
 
+.row-label-stack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  white-space: normal;
+}
+
+.row-label-note {
+  font-size: 0.82em;
+  font-style: italic;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.data-table tbody tr.row-republican.row-sub td:first-child {
+  white-space: normal;
+}
+
 .data-table tbody tr.row-county-header {
   font-weight: 700;
   background: #e3edf3;

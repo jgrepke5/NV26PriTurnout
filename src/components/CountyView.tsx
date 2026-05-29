@@ -2,9 +2,6 @@ import { buildCountyBlocks } from "@/lib/county";
 import type { SheetTable } from "@/lib/types";
 import { GroupedDataTable } from "./GroupedDataTable";
 
-const INTRO =
-  "Turnout and voting method by county, with party breakdowns nested under each county total.";
-
 export function CountyView({ sheet }: { sheet: SheetTable }) {
   const blocks = buildCountyBlocks(sheet);
 
@@ -12,9 +9,7 @@ export function CountyView({ sheet }: { sheet: SheetTable }) {
     <section className="section" id="county">
       <div className="container">
         <header className="section-header">
-          <p className="section-kicker">By the numbers</p>
           <h2 className="section-title">{sheet.title}</h2>
-          <p className="section-intro">{INTRO}</p>
         </header>
       </div>
       <div className="county-blocks">

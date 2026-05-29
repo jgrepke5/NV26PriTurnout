@@ -1,6 +1,7 @@
-import { displayLabel, isSubRow } from "@/lib/format";
+import { isSubRow } from "@/lib/format";
 import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
+import { RowLabel } from "./RowLabel";
 import { TableHeadRow } from "./TableHeadRow";
 
 function isNumericColumn(headers: string[], colIndex: number): boolean {
@@ -63,7 +64,11 @@ export function DataTable({
                       className={isNum ? "num" : undefined}
                       data-label={headers[ci]}
                     >
-                      {ci === labelCol ? displayLabel(text) : text}
+                      {ci === labelCol ? (
+                        <RowLabel text={text} />
+                      ) : (
+                        text
+                      )}
                     </td>
                   );
                 })}
