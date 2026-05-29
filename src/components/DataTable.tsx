@@ -58,7 +58,11 @@ export function DataTable({
     >
       <div className="table-scroll">
         <table className="data-table">
-          <TableHeadRow headers={headers} sticky={stickyHeader} />
+          <TableHeadRow
+            headers={headers}
+            sticky={stickyHeader}
+            compactStateHeaders={wrapHeaders}
+          />
           <tbody>
           {rows.map((row, ri) => {
             const label = String(row[labelCol] ?? "");

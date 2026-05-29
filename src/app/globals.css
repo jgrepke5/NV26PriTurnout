@@ -362,10 +362,41 @@ a:hover {
   white-space: nowrap;
 }
 
+.table-wrap--wrap-headers .data-table {
+  table-layout: auto;
+  width: max-content;
+  min-width: min(100%, 640px);
+}
+
 .table-wrap--wrap-headers .data-table th {
-  white-space: normal;
   vertical-align: middle;
   line-height: 1.15;
+}
+
+.table-wrap--wrap-headers .data-table th.th-state-col {
+  white-space: nowrap;
+  width: 1%;
+  padding-left: 0.5rem;
+  padding-right: 0.35rem;
+}
+
+.table-wrap--wrap-headers .data-table th.th-metric-col {
+  white-space: normal;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+.table-wrap--wrap-headers .data-table th.th-state-col + th.th-metric-col {
+  padding-left: 0.35rem;
+}
+
+.table-wrap--wrap-headers .data-table td.num {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+.table-wrap--wrap-headers .th-line--nowrap {
+  white-space: nowrap;
 }
 
 .table-wrap--wrap-headers .th-line--wrap {

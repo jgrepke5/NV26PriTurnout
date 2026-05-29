@@ -1,3 +1,16 @@
+const COMPARISON_STATE_HEADERS = new Set([
+  "Georgia",
+  "Idaho",
+  "Indiana",
+  "Kentucky",
+  "Nebraska",
+  "Pennsylvania",
+]);
+
+export function isComparisonStateHeader(label: string): boolean {
+  return COMPARISON_STATE_HEADERS.has(label.trim());
+}
+
 /** Column header text split across up to three lines for narrow columns */
 export function headerLines(label: string): string[] {
   const known: Record<string, string[]> = {
