@@ -6,6 +6,8 @@ import { isCacheStale } from "./schedule";
 import type { TurnoutSnapshot } from "./types";
 
 const CACHE_TAG = "turnout-data";
+/** Bump to invalidate cached sheet data after deploy (e.g. turnout-snapshot-2). */
+const SNAPSHOT_CACHE_KEY = "turnout-snapshot-2";
 const REVALIDATE_SECONDS = 86400;
 const LOCAL_CACHE_PATH = path.join(process.cwd(), "data", "cache.json");
 
@@ -13,7 +15,7 @@ const isVercel = Boolean(process.env.VERCEL);
 
 const getCachedSnapshot = unstable_cache(
   async () => fetchTurnoutSnapshot(),
-  ["turnout-snapshot"],
+  [SNAPSHOT_CACHE_KEY],
   { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAG] },
 );
 
