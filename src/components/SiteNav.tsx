@@ -7,6 +7,7 @@ const TABS = [
   { href: "/", label: "Statewide" },
   { href: "/county", label: "County" },
   { href: "/legislative", label: "Legislative" },
+  { href: "/congressional", label: "Congressional" },
 ] as const;
 
 export function SiteNav() {

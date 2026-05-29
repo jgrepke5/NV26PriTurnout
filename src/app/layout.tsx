@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "2026 Nevada Primary Turnout",
   description:
-    "Live reporting on Nevada’s 2026 primary election turnout — statewide, by county, and in competitive legislative districts.",
+    "Live reporting on Nevada’s 2026 primary election turnout — statewide, by county, and in competitive legislative and congressional districts.",
   openGraph: {
     title: "2026 Nevada Primary Turnout",
     description:

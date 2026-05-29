@@ -308,7 +308,7 @@ export function buildBreakoutBlocks(
       "secondary",
       config.secondaryBlockTitle,
     ),
-  ];
+  ].filter((block) => block.groups.length > 0);
 }
 
 

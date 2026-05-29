@@ -2,7 +2,7 @@
 
 A journalism-style reporting site that displays turnout figures from the [2026 Nevada Primary Turnout Statistics](https://docs.google.com/spreadsheets/d/1vxtJSRNtDA6d8IG1UB-XDUuwKJOrk8xtDXazYEoLwG4/edit) Google Sheet. Data refreshes once per day at noon Pacific.
 
-**Published tabs:** Statewide, County, Legislative (the raw **Data** tab is excluded).
+**Published tabs:** Statewide, County, Legislative, Congressional (the raw **Data** tab is excluded).
 
 ## Run locally
 

@@ -1,0 +1,22 @@
+import { CongressionalView } from "@/components/CongressionalView";
+import { ErrorPage } from "@/components/ErrorPage";
+import { PageShell } from "@/components/PageShell";
+import { getSheet, loadTurnoutData } from "@/lib/pages";
+
+export const revalidate = 86400;
+
+export default async function CongressionalPage() {
+  try {
+    const snapshot = await loadTurnoutData();
+    const congressional = getSheet(snapshot, "Congressional");
+
+    return (
+      <PageShell fetchedAt={snapshot.fetchedAt}>
+        <CongressionalView sheet={congressional} />
+      </PageShell>
+    );
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return <ErrorPage message={message} />;
+  }
+}
