@@ -330,7 +330,7 @@ a:hover {
   padding: 0.55rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid var(--rule);
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .data-table th:first-child,
@@ -697,6 +697,13 @@ a:hover {
 
   .data-block-layout {
     flex-direction: column;
+  }
+
+  .statewide-blocks .data-block-chart {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .data-block-table {
