@@ -1,4 +1,4 @@
-import { DataSection } from "@/components/DataSection";
+import { CountyView } from "@/components/CountyView";
 import { ErrorPage } from "@/components/ErrorPage";
 import { PageShell } from "@/components/PageShell";
 import { getSheet, loadTurnoutData } from "@/lib/pages";
@@ -12,7 +12,7 @@ export default async function CountyPage() {
 
     return (
       <PageShell fetchedAt={snapshot.fetchedAt}>
-        <DataSection sheet={county} />
+        <CountyView sheet={county} />
       </PageShell>
     );
   } catch (err) {

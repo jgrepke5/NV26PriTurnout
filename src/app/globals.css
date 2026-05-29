@@ -226,6 +226,18 @@ a:hover {
   color: var(--block-historical);
 }
 
+.data-block--rural .section-title {
+  color: var(--block-historical);
+}
+
+.county-blocks .section {
+  padding-top: 1.5rem;
+}
+
+.county-blocks .section-title {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
+
 .section-header {
   margin-bottom: 1.25rem;
 }
@@ -267,6 +279,15 @@ a:hover {
 
 .table-wrap--historical {
   border-top: 4px solid var(--block-historical);
+}
+
+.table-wrap--rural {
+  border-top: 4px solid var(--block-historical);
+}
+
+.table-wrap--rural .data-table th {
+  background: #f3ebe0;
+  color: var(--block-historical);
 }
 
 .data-table {
@@ -349,6 +370,37 @@ a:hover {
 
 .data-table tbody tr.row-sub td:first-child {
   padding-left: 1.75rem;
+}
+
+.data-table tbody tr.row-sub td:first-child::before {
+  content: "↳ ";
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.data-table tbody tr.row-county-header {
+  font-weight: 700;
+  background: #e3edf3;
+}
+
+.data-table tbody tr.row-county-header td {
+  border-top: 2px solid var(--block-current);
+}
+
+.data-table tbody tr.row-county-header td:first-child {
+  border-left: 4px solid var(--block-current);
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header {
+  background: #f3ebe0;
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header td {
+  border-top-color: var(--block-historical);
+}
+
+.table-wrap--rural .data-table tbody tr.row-county-header td:first-child {
+  border-left-color: var(--block-historical);
 }
 
 .data-table td.num {

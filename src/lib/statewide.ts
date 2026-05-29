@@ -24,7 +24,7 @@ const CURRENT_COLUMNS: ColumnSpec[] = [
   { match: (h) => /votes to date/i.test(h), label: "Votes to Date" },
   {
     match: (h) => /'26\s*to\s*%/i.test(h),
-    label: "2026 Turnout Percentage",
+    label: "2026 Turnout %",
   },
   { match: (h) => /% early votes/i.test(h), label: "% Early Votes" },
   { match: (h) => /% mail votes/i.test(h), label: "% Mail Votes" },

@@ -1,4 +1,4 @@
-import { displayLabel } from "@/lib/format";
+import { displayLabel, isSubRow } from "@/lib/format";
 import type { CellValue } from "@/lib/types";
 
 function isNumericColumn(headers: string[], colIndex: number): boolean {
@@ -18,14 +18,27 @@ function partyRowClass(label: string): string {
   return "";
 }
 
+function resolveRowClass(
+  label: string,
+  rowClasses: string[] | undefined,
+  ri: number,
+): string {
+  if (rowClasses?.[ri]) return rowClasses[ri];
+  const party = partyRowClass(label);
+  const sub = isSubRow(label) ? "row-sub" : "";
+  return [party, sub].filter(Boolean).join(" ");
+}
+
 export function DataTable({
   headers,
   rows,
   variant = "default",
+  rowClasses,
 }: {
   headers: string[];
   rows: CellValue[][];
-  variant?: "default" | "current" | "historical";
+  variant?: "default" | "current" | "historical" | "rural";
+  rowClasses?: string[];
 }) {
   const labelCol = 0;
 
@@ -48,7 +61,7 @@ export function DataTable({
           {rows.map((row, ri) => {
             const label = String(row[labelCol] ?? "");
             return (
-              <tr key={ri} className={partyRowClass(label)}>
+              <tr key={ri} className={resolveRowClass(label, rowClasses, ri)}>
                 {row.map((cell, ci) => {
                   const text =
                     cell == null || cell === "" ? "—" : String(cell);

@@ -6,11 +6,23 @@ function dateYmdInTz(d: Date): string {
   return d.toLocaleDateString("en-CA", { timeZone: TZ });
 }
 
+function hourInPacific(d: Date): number {
+  return Number(
+    d.toLocaleString("en-US", {
+      timeZone: TZ,
+      hour: "numeric",
+      hour12: false,
+    }),
+  );
+}
+
 export function noonPacific(ymd: string): Date {
-  for (const offset of ["-08:00", "-07:00"]) {
-    const h = String(SYNC_HOUR).padStart(2, "0");
+  const h = String(SYNC_HOUR).padStart(2, "0");
+  for (const offset of ["-07:00", "-08:00"]) {
     const candidate = new Date(`${ymd}T${h}:00:00${offset}`);
-    if (dateYmdInTz(candidate) === ymd) return candidate;
+    if (dateYmdInTz(candidate) === ymd && hourInPacific(candidate) === SYNC_HOUR) {
+      return candidate;
+    }
   }
   throw new Error(`Could not resolve noon Pacific for ${ymd}`);
 }
