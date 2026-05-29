@@ -3,7 +3,12 @@
 import type { DataGroup } from "@/lib/breakout-table";
 import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
-import { useCallback, useRef, type ReactNode, type UIEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { RowLabel } from "./RowLabel";
 import { TableHeadRow } from "./TableHeadRow";
 import { TurnoutPieChart } from "./TurnoutPieChart";
@@ -21,18 +26,77 @@ function TableColGroup({ headers }: { headers: string[] }) {
   );
 }
 
-function TableScroll({
-  children,
-  onScroll,
-}: {
-  children: ReactNode;
-  onScroll: (e: UIEvent<HTMLDivElement>) => void;
-}) {
-  return (
-    <div className="table-scroll" onScroll={onScroll}>
-      {children}
-    </div>
-  );
+function TableScroll({ children }: { children: ReactNode }) {
+  return <div className="table-scroll">{children}</div>;
+}
+
+function useSyncedTableScroll(
+  rootRef: RefObject<HTMLDivElement | null>,
+  groupCount: number,
+) {
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const panes = Array.from(
+      root.querySelectorAll<HTMLElement>(".table-scroll"),
+    );
+    if (panes.length < 2) return;
+
+    let activePane: HTMLElement | null = null;
+    let isSyncing = false;
+    let rafId = 0;
+
+    const clearActive = () => {
+      activePane = null;
+    };
+
+    const syncFrom = (source: HTMLElement, scrollLeft: number) => {
+      isSyncing = true;
+      for (const pane of panes) {
+        if (pane === source) continue;
+        if (Math.abs(pane.scrollLeft - scrollLeft) > 0.5) {
+          pane.scrollLeft = scrollLeft;
+        }
+      }
+      isSyncing = false;
+    };
+
+    const onScroll = (e: Event) => {
+      if (isSyncing) return;
+      const source = e.currentTarget as HTMLElement;
+      if (activePane && activePane !== source) return;
+
+      const { scrollLeft } = source;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        syncFrom(source, scrollLeft);
+      });
+    };
+
+    const disposers: (() => void)[] = [];
+
+    for (const pane of panes) {
+      const onPointerDown = () => {
+        activePane = pane;
+      };
+      pane.addEventListener("pointerdown", onPointerDown, { passive: true });
+      pane.addEventListener("pointerup", clearActive, { passive: true });
+      pane.addEventListener("pointercancel", clearActive, { passive: true });
+      pane.addEventListener("scroll", onScroll, { passive: true });
+      disposers.push(() => {
+        pane.removeEventListener("pointerdown", onPointerDown);
+        pane.removeEventListener("pointerup", clearActive);
+        pane.removeEventListener("pointercancel", clearActive);
+        pane.removeEventListener("scroll", onScroll);
+      });
+    }
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      disposers.forEach((dispose) => dispose());
+    };
+  }, [rootRef, groupCount]);
 }
 
 export function GroupedDataTable({
@@ -45,22 +109,7 @@ export function GroupedDataTable({
   variant?: "default" | "current" | "historical" | "rural";
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const syncingRef = useRef(false);
-
-  const handleTableScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
-    if (syncingRef.current) return;
-    const scrollLeft = e.currentTarget.scrollLeft;
-    const root = rootRef.current;
-    if (!root) return;
-
-    syncingRef.current = true;
-    root.querySelectorAll<HTMLElement>(".table-scroll").forEach((el) => {
-      if (el !== e.currentTarget) {
-        el.scrollLeft = scrollLeft;
-      }
-    });
-    syncingRef.current = false;
-  }, []);
+  useSyncedTableScroll(rootRef, groups.length);
 
   return (
     <div
@@ -70,7 +119,7 @@ export function GroupedDataTable({
       <div className="grouped-table-sticky-head">
         <div className="data-group grouped-table-sticky-head-row">
           <div className="data-group-table">
-            <TableScroll onScroll={handleTableScroll}>
+            <TableScroll>
               <table className="data-table">
                 <TableColGroup headers={headers} />
                 <TableHeadRow headers={headers} />
@@ -86,7 +135,7 @@ export function GroupedDataTable({
       {groups.map((group) => (
         <div key={group.name} className="data-group">
           <div className="data-group-table">
-            <TableScroll onScroll={handleTableScroll}>
+            <TableScroll>
               <table className="data-table">
                 <TableColGroup headers={headers} />
                 <tbody>

@@ -290,6 +290,7 @@ a:hover {
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .table-scroll .data-table {
@@ -514,6 +515,16 @@ a:hover {
   font-weight: 400;
 }
 
+.row-label-np-split {
+  display: inline;
+  white-space: nowrap;
+}
+
+.row-label-np-line1,
+.row-label-np-line2 {
+  display: inline;
+}
+
 .data-table tbody tr.row-republican.row-sub td:first-child {
   white-space: normal;
 }
@@ -716,6 +727,25 @@ a:hover {
 
   .grouped-table-sticky-head-spacer {
     display: none;
+  }
+
+  .grouped-table .table-scroll .data-table {
+    width: 640px;
+    min-width: 640px;
+    table-layout: fixed;
+  }
+
+  .row-label-np-split {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .row-label-np-line1,
+  .row-label-np-line2 {
+    display: block;
   }
 }
 
