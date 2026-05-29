@@ -47,9 +47,10 @@ export function DataTable({
 
   return (
     <div className={`table-wrap table-wrap--${variant}`}>
-      <table className="data-table">
-        <TableHeadRow headers={headers} sticky={stickyHeader} />
-        <tbody>
+      <div className="table-scroll">
+        <table className="data-table">
+          <TableHeadRow headers={headers} sticky={stickyHeader} />
+          <tbody>
           {rows.map((row, ri) => {
             const label = String(row[labelCol] ?? "");
             return (
@@ -75,8 +76,9 @@ export function DataTable({
               </tr>
             );
           })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,9 @@
+"use client";
+
 import type { DataGroup } from "@/lib/breakout-table";
 import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
+import { useCallback, useRef, type ReactNode, type UIEvent } from "react";
 import { RowLabel } from "./RowLabel";
 import { TableHeadRow } from "./TableHeadRow";
 import { TurnoutPieChart } from "./TurnoutPieChart";
@@ -18,6 +21,20 @@ function TableColGroup({ headers }: { headers: string[] }) {
   );
 }
 
+function TableScroll({
+  children,
+  onScroll,
+}: {
+  children: ReactNode;
+  onScroll: (e: UIEvent<HTMLDivElement>) => void;
+}) {
+  return (
+    <div className="table-scroll" onScroll={onScroll}>
+      {children}
+    </div>
+  );
+}
+
 export function GroupedDataTable({
   headers,
   groups,
@@ -27,15 +44,38 @@ export function GroupedDataTable({
   groups: DataGroup[];
   variant?: "default" | "current" | "historical" | "rural";
 }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const syncingRef = useRef(false);
+
+  const handleTableScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
+    if (syncingRef.current) return;
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const root = rootRef.current;
+    if (!root) return;
+
+    syncingRef.current = true;
+    root.querySelectorAll<HTMLElement>(".table-scroll").forEach((el) => {
+      if (el !== e.currentTarget) {
+        el.scrollLeft = scrollLeft;
+      }
+    });
+    syncingRef.current = false;
+  }, []);
+
   return (
-    <div className={`table-wrap table-wrap--${variant ?? "default"} grouped-table`}>
+    <div
+      ref={rootRef}
+      className={`table-wrap table-wrap--${variant ?? "default"} grouped-table`}
+    >
       <div className="grouped-table-sticky-head">
         <div className="data-group grouped-table-sticky-head-row">
           <div className="data-group-table">
-            <table className="data-table">
-              <TableColGroup headers={headers} />
-              <TableHeadRow headers={headers} />
-            </table>
+            <TableScroll onScroll={handleTableScroll}>
+              <table className="data-table">
+                <TableColGroup headers={headers} />
+                <TableHeadRow headers={headers} />
+              </table>
+            </TableScroll>
           </div>
           <div
             className="data-group-chart data-group-chart--empty grouped-table-sticky-head-spacer"
@@ -46,19 +86,21 @@ export function GroupedDataTable({
       {groups.map((group) => (
         <div key={group.name} className="data-group">
           <div className="data-group-table">
-            <table className="data-table">
-              <TableColGroup headers={headers} />
-              <tbody>
-                {group.rows.map((row, ri) => (
-                  <DataTableBodyRow
-                    key={ri}
-                    headers={headers}
-                    row={row}
-                    rowClass={group.rowClasses[ri]}
-                  />
-                ))}
-              </tbody>
-            </table>
+            <TableScroll onScroll={handleTableScroll}>
+              <table className="data-table">
+                <TableColGroup headers={headers} />
+                <tbody>
+                  {group.rows.map((row, ri) => (
+                    <DataTableBodyRow
+                      key={ri}
+                      headers={headers}
+                      row={row}
+                      rowClass={group.rowClasses[ri]}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </TableScroll>
           </div>
           {group.chartSlices.length > 0 ? (
             <div className="data-group-chart">
