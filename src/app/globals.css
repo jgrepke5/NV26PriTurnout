@@ -17,7 +17,8 @@
   --block-historical: #6b4a1e;
   --block-primary-header-bg: #ebe8e2;
   --block-primary-header-border: #5c5348;
-  --nav-height: 2.45rem;
+  /* Site nav link block: padding + line-height + 3px link border + nav border */
+  --nav-height: calc(0.85rem * 2 + 0.82rem * 1.55 + 3px + 1px);
   --font-display: "Libre Baskerville", "Georgia", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", sans-serif;
   --max-width: 1120px;
@@ -368,8 +369,7 @@ a:hover {
   top: var(--nav-height);
   z-index: 7;
   background: var(--paper-elevated);
-  border-bottom: 1px solid var(--rule);
-  box-shadow: 0 2px 0 var(--rule);
+  border-bottom: 2px solid var(--rule);
 }
 
 .grouped-table-sticky-head .data-table {
@@ -381,6 +381,12 @@ a:hover {
 .grouped-table-sticky-head .data-table th {
   background: var(--block-primary-header-bg);
   color: var(--ink);
+  border-bottom: none;
+  vertical-align: middle;
+}
+
+.grouped-table-sticky-head + .data-group .data-group-table tbody tr.row-county-header td {
+  border-top: none;
 }
 
 .table-wrap--rural .grouped-table-sticky-head .data-table th {
