@@ -12,7 +12,7 @@ export default async function StatewidePage() {
     const statewide = getSheet(snapshot, "Statewide");
 
     return (
-      <PageShell fetchedAt={snapshot.fetchedAt} sourceUrl={snapshot.sourceUrl}>
+      <PageShell fetchedAt={snapshot.fetchedAt}>
         <HeroStats statewide={statewide} />
         <StatewideView sheet={statewide} />
       </PageShell>

@@ -11,7 +11,7 @@ export default async function CountyPage() {
     const county = getSheet(snapshot, "County");
 
     return (
-      <PageShell fetchedAt={snapshot.fetchedAt} sourceUrl={snapshot.sourceUrl}>
+      <PageShell fetchedAt={snapshot.fetchedAt}>
         <DataSection sheet={county} />
       </PageShell>
     );

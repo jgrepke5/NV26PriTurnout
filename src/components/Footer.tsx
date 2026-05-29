@@ -1,14 +1,11 @@
-export function Footer({ sourceUrl }: { sourceUrl: string }) {
+export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container">
         <p>
-          <strong>Data source:</strong> Figures are pulled automatically from
-          the{" "}
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-            2026 Nevada Primary Turnout Statistics
-          </a>{" "}
-          spreadsheet. The raw voter-level tab is not published on this site.
+          2014 is added for comparison as this was Nevada&apos;s most recent
+          mid-term election with an incumbent Republican Governor and no United
+          States Senate race.
         </p>
         <p>
           This page refreshes its cache daily at noon Pacific. Percentages and vote

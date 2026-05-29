@@ -11,7 +11,7 @@ export default async function LegislativePage() {
     const legislative = getSheet(snapshot, "Legislative");
 
     return (
-      <PageShell fetchedAt={snapshot.fetchedAt} sourceUrl={snapshot.sourceUrl}>
+      <PageShell fetchedAt={snapshot.fetchedAt}>
         <DataSection sheet={legislative} />
       </PageShell>
     );

@@ -6,11 +6,9 @@ import { UpdateBanner } from "./UpdateBanner";
 
 export function PageShell({
   fetchedAt,
-  sourceUrl,
   children,
 }: {
   fetchedAt: string;
-  sourceUrl: string;
   children: ReactNode;
 }) {
   return (
@@ -19,7 +17,7 @@ export function PageShell({
       <SiteNav />
       <UpdateBanner fetchedAt={fetchedAt} />
       <main>{children}</main>
-      <Footer sourceUrl={sourceUrl} />
+      <Footer />
     </>
   );
 }
