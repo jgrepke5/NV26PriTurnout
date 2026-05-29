@@ -1,10 +1,10 @@
 import { displayLabel, isSubRow } from "@/lib/format";
+import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
+import { TableHeadRow } from "./TableHeadRow";
 
 function isNumericColumn(headers: string[], colIndex: number): boolean {
-  if (colIndex === 0) return false;
-  const h = headers[colIndex] ?? "";
-  return /%|registration|vote|turnout|early|mail/i.test(h);
+  return isNumericHeader(headers[colIndex] ?? "", colIndex);
 }
 
 function partyRowClass(label: string): string {
@@ -34,29 +34,20 @@ export function DataTable({
   rows,
   variant = "default",
   rowClasses,
+  stickyHeader = false,
 }: {
   headers: string[];
   rows: CellValue[][];
   variant?: "default" | "current" | "historical" | "rural";
   rowClasses?: string[];
+  stickyHeader?: boolean;
 }) {
   const labelCol = 0;
 
   return (
     <div className={`table-wrap table-wrap--${variant}`}>
       <table className="data-table">
-        <thead>
-          <tr>
-            {headers.map((h, i) => (
-              <th
-                key={`${h}-${i}`}
-                className={isNumericColumn(headers, i) ? "num" : undefined}
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
+        <TableHeadRow headers={headers} sticky={stickyHeader} />
         <tbody>
           {rows.map((row, ri) => {
             const label = String(row[labelCol] ?? "");

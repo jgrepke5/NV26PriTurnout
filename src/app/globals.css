@@ -15,6 +15,7 @@
   --np-border: #6b5b8a;
   --block-current: #1e4d6b;
   --block-historical: #6b4a1e;
+  --nav-height: 3.1rem;
   --font-display: "Libre Baskerville", "Georgia", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", sans-serif;
   --max-width: 1120px;
@@ -273,6 +274,10 @@ a:hover {
   border-radius: 2px;
 }
 
+.table-wrap.grouped-table {
+  overflow: visible;
+}
+
 .table-wrap--current {
   border-top: 4px solid var(--block-current);
 }
@@ -323,6 +328,26 @@ a:hover {
   background: #f0ebe3;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.th-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.15;
+}
+
+.th-line {
+  display: block;
+}
+
+.data-group-thead th {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 6;
+  white-space: normal;
+  vertical-align: bottom;
+  box-shadow: 0 1px 0 var(--rule);
 }
 
 .table-wrap--current .data-table th {
@@ -441,21 +466,16 @@ a:hover {
   padding: 0.5rem 0;
 }
 
-.grouped-table .grouped-table-head {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.grouped-table .grouped-table-head .data-table {
-  min-width: 640px;
+.grouped-table {
+  overflow: visible;
 }
 
 .data-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 0.85rem 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 10.5rem;
+  align-items: start;
+  gap: 0 1.25rem;
+  padding: 0 0.75rem;
   border-bottom: 1px solid var(--rule);
   background: var(--paper-elevated);
 }
@@ -465,17 +485,34 @@ a:hover {
 }
 
 .data-group-table {
-  flex: 1;
-  min-width: min(100%, 480px);
+  grid-column: 1;
+  min-width: 0;
   overflow-x: auto;
 }
 
 .data-group-table .data-table {
   min-width: 640px;
+  table-layout: fixed;
+}
+
+.grouped-table .col-label {
+  width: 24%;
+}
+
+.grouped-table .col-data {
+  width: calc(76% / 7);
 }
 
 .data-group-chart {
-  flex: 0 0 auto;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  padding: 0.75rem 0;
+}
+
+.data-group-chart--empty {
+  visibility: hidden;
+  padding: 0;
 }
 
 .turnout-pie {
@@ -534,12 +571,18 @@ a:hover {
   }
 
   .data-group {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
   }
 
-  .data-group-chart {
-    align-self: center;
+  .data-group-chart,
+  .data-group-chart--empty {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: center;
+  }
+
+  .data-group-chart--empty {
+    display: none;
   }
 }
 

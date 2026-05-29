@@ -1,6 +1,8 @@
 import type { DataGroup } from "@/lib/breakout-table";
 import { displayLabel } from "@/lib/format";
+import { isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
+import { TableHeadRow } from "./TableHeadRow";
 import { TurnoutPieChart } from "./TurnoutPieChart";
 
 export type { DataGroup };
@@ -16,28 +18,17 @@ export function GroupedDataTable({
 }) {
   return (
     <div className={`table-wrap table-wrap--${variant ?? "default"} grouped-table`}>
-      <table className="data-table grouped-table-head">
-        <thead>
-          <tr>
-            {headers.map((h, i) => (
-              <th
-                key={`${h}-${i}`}
-                className={
-                  i > 0 && /%|registration|vote|turnout|early|mail/i.test(h)
-                    ? "num"
-                    : undefined
-                }
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-      </table>
       {groups.map((group) => (
         <div key={group.name} className="data-group">
           <div className="data-group-table">
             <table className="data-table">
+              <colgroup>
+                <col className="col-label" />
+                {headers.slice(1).map((h) => (
+                  <col key={h} className="col-data" />
+                ))}
+              </colgroup>
+              <TableHeadRow headers={headers} sticky />
               <tbody>
                 {group.rows.map((row, ri) => (
                   <DataTableBodyRow
@@ -54,14 +45,15 @@ export function GroupedDataTable({
             <div className="data-group-chart">
               <TurnoutPieChart slices={group.chartSlices} />
             </div>
-          ) : null}
+          ) : (
+            <div className="data-group-chart data-group-chart--empty" aria-hidden />
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-/** Renders one tbody row using the same rules as DataTable */
 function DataTableBodyRow({
   headers,
   row,
@@ -72,19 +64,12 @@ function DataTableBodyRow({
   rowClass: string;
 }) {
   const labelCol = 0;
-  const isNumericColumn = (colIndex: number) => {
-    if (colIndex === 0) return false;
-    const h = headers[colIndex] ?? "";
-    return /%|registration|vote|turnout|early|mail/i.test(h);
-  };
-
-  const label = String(row[labelCol] ?? "");
 
   return (
     <tr className={rowClass}>
       {row.map((cell, ci) => {
         const text = cell == null || cell === "" ? "—" : String(cell);
-        const isNum = isNumericColumn(ci);
+        const isNum = isNumericHeader(headers[ci] ?? "", ci);
         return (
           <td
             key={ci}

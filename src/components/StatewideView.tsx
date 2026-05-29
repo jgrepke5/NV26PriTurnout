@@ -24,6 +24,7 @@ export function StatewideView({ sheet }: { sheet: SheetTable }) {
                     headers={block.headers}
                     rows={block.rows}
                     variant={block.variant}
+                    stickyHeader
                   />
                 </div>
                 <aside className="data-block-chart">
