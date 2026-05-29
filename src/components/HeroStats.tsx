@@ -30,7 +30,7 @@ export function HeroStats({ statewide }: { statewide: SheetTable | undefined }) 
         <p className="lead">
           Nevada&apos;s 2026 primary is underway. The tables below show
           current participation and historical turnout benchmarks by party.
-          Use the tabs above for county, legislative, and congressional
+          Use the tabs above for county, congressional, and legislative
           district breakouts.
         </p>
       </div>

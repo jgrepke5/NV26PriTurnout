@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 const TABS = [
   { href: "/", label: "Statewide" },
   { href: "/county", label: "County" },
-  { href: "/legislative", label: "Legislative" },
   { href: "/congressional", label: "Congressional" },
+  { href: "/legislative", label: "Legislative" },
 ] as const;
 
 export function SiteNav() {
