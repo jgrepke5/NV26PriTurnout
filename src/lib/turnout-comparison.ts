@@ -28,6 +28,19 @@ export function parseTurnoutComparisonGviz(raw: string): SheetTable {
   };
 }
 
+export const NATIONWIDE_COMPARISON_FOOTNOTE =
+  "States used for Nationwide Comparison include only those that report partisan voter registration and have completed their 2026 primary election. Early voting metrics are not included as states have disparate rules governing early voting not necessarily applicable to Nevada or one another.";
+
+function normalizeComparisonHeaders(headers: string[]): string[] {
+  return headers.map((header, i) => {
+    const trimmed = header.trim();
+    if (i === 0 || /^column\s*1$/i.test(trimmed) || trimmed === "Category") {
+      return "Party Affiliation";
+    }
+    return trimmed || header;
+  });
+}
+
 export function buildNationwideComparisonBlock(
   sheet: SheetTable,
 ): TableBlock | null {
@@ -35,9 +48,11 @@ export function buildNationwideComparisonBlock(
 
   return {
     title: "Nationwide Comparison",
-    headers: sheet.headers,
+    headers: normalizeComparisonHeaders(sheet.headers),
     rows: sheet.rows,
     variant: "historical",
+    wrapHeaders: true,
+    footnote: NATIONWIDE_COMPARISON_FOOTNOTE,
   };
 }
 

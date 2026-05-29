@@ -362,6 +362,20 @@ a:hover {
   white-space: nowrap;
 }
 
+.table-wrap--wrap-headers .data-table th {
+  white-space: normal;
+  vertical-align: middle;
+  line-height: 1.15;
+}
+
+.data-block-footnote {
+  margin: 1rem 0 0;
+  max-width: 42rem;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
 .th-lines {
   display: flex;
   flex-direction: column;
@@ -546,6 +560,10 @@ a:hover {
 
 .table-wrap--current .data-table tbody tr.row-county-header td:first-child {
   border-left: 4px solid var(--block-primary-header-border);
+}
+
+.data-table tbody tr.row-county-header.row-total-district {
+  font-weight: 400;
 }
 
 .table-wrap--rural .data-group-thead th {

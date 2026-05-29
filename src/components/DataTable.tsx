@@ -36,17 +36,26 @@ export function DataTable({
   variant = "default",
   rowClasses,
   stickyHeader = false,
+  wrapHeaders = false,
 }: {
   headers: string[];
   rows: CellValue[][];
   variant?: "default" | "current" | "historical" | "rural";
   rowClasses?: string[];
   stickyHeader?: boolean;
+  wrapHeaders?: boolean;
 }) {
   const labelCol = 0;
 
   return (
-    <div className={`table-wrap table-wrap--${variant}`}>
+    <div
+      className={[
+        `table-wrap table-wrap--${variant}`,
+        wrapHeaders ? "table-wrap--wrap-headers" : undefined,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="table-scroll">
         <table className="data-table">
           <TableHeadRow headers={headers} sticky={stickyHeader} />

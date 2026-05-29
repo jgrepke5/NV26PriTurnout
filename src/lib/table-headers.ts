@@ -17,6 +17,9 @@ export function headerLines(label: string): string[] {
     "2022 Turnout %": ["2022", "Turnout %"],
     "% to 2014 Turnout": ["% to 2014", "Turnout"],
     "% to 2022 Turnout": ["% to 2022", "Turnout"],
+    "National Average Turnout": ["National Average", "Turnout"],
+    "NV TO % to Date": ["NV TO %", "to Date"],
+    "% to Natl Avg": ["% to Natl", "Avg"],
   };
 
   const pair = known[label];

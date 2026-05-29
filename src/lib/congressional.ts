@@ -53,6 +53,10 @@ function formatPct(ratio: number): string {
   return `${(ratio * 100).toFixed(2)}%`;
 }
 
+function formatCount(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
 function computeGrandTotalRow(
   districtRows: CellValue[][],
   headers: string[],
@@ -74,6 +78,11 @@ function computeGrandTotalRow(
   const mail = mailIdx >= 0 ? parseVoteCount(row[mailIdx]) : 0;
   const votes = votesIdx >= 0 ? parseVoteCount(row[votesIdx]) : 0;
   const voteMethods = early + mail;
+
+  if (vrIdx >= 0 && vr > 0) row[vrIdx] = formatCount(vr);
+  if (earlyIdx >= 0 && early > 0) row[earlyIdx] = formatCount(early);
+  if (mailIdx >= 0 && mail > 0) row[mailIdx] = formatCount(mail);
+  if (votesIdx >= 0 && votes > 0) row[votesIdx] = formatCount(votes);
 
   if (earlyPctIdx >= 0 && voteMethods > 0) {
     row[earlyPctIdx] = formatPct(early / voteMethods);
@@ -100,7 +109,7 @@ function appendTotalGroup(block: BreakoutTableBlock): BreakoutTableBlock {
   for (const district of districts) {
     const headerRow = [...district.rows[0]];
     rows.push(headerRow);
-    rowClasses.push("row-county-header");
+    rowClasses.push("row-county-header row-total-district");
     districtHeaderRows.push(headerRow);
   }
 

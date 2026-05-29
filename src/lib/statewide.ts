@@ -8,6 +8,8 @@ export interface TableBlock {
   rows: CellValue[][];
   variant: "current" | "historical";
   chartSlices?: PieSlice[];
+  wrapHeaders?: boolean;
+  footnote?: string;
 }
 
 type ColumnSpec = {

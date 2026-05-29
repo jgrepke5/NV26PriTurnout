@@ -37,11 +37,17 @@ export function StatewideView({
                 </aside>
               </div>
             ) : (
-              <DataTable
-                headers={block.headers}
-                rows={block.rows}
-                variant={block.variant}
-              />
+              <>
+                <DataTable
+                  headers={block.headers}
+                  rows={block.rows}
+                  variant={block.variant}
+                  wrapHeaders={block.wrapHeaders}
+                />
+                {block.footnote ? (
+                  <p className="data-block-footnote">{block.footnote}</p>
+                ) : null}
+              </>
             )}
           </div>
         </section>
