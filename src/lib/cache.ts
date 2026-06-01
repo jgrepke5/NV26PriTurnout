@@ -11,6 +11,14 @@ const LOCAL_CACHE_PATH = path.join(process.cwd(), "data", "cache.json");
 
 const isVercel = Boolean(process.env.VERCEL);
 
+/** Set by `npm run build` after sync so SSG reads disk instead of refetching every tab. */
+function useBuildTimeCache(): boolean {
+  return (
+    process.env.NEXT_USE_SHEET_CACHE === "1" ||
+    process.env.NEXT_PHASE === "phase-production-build"
+  );
+}
+
 const getCachedSnapshot = unstable_cache(
   async () => fetchTurnoutSnapshot(),
   ["turnout-snapshot"],
@@ -31,19 +39,30 @@ async function writeLocalCache(snapshot: TurnoutSnapshot): Promise<void> {
   await writeFile(LOCAL_CACHE_PATH, JSON.stringify(snapshot, null, 2), "utf-8");
 }
 
-/** Bust cache and fetch fresh data (used by cron / manual sync). */
+/** Fetch from Google Sheets and write data/cache.json (build script / local sync). */
+export async function fetchAndPersistSnapshot(): Promise<TurnoutSnapshot> {
+  const snapshot = await fetchTurnoutSnapshot();
+  await writeLocalCache(snapshot);
+  return snapshot;
+}
+
+/** Bust cache and fetch fresh data (used by cron / API routes). */
 export async function refreshSnapshot(): Promise<TurnoutSnapshot> {
   revalidateTag(CACHE_TAG);
-  const snapshot = await fetchTurnoutSnapshot();
-  if (!isVercel) {
-    await writeLocalCache(snapshot);
-  }
-  return snapshot;
+  return fetchAndPersistSnapshot();
 }
 
 export async function getSnapshot(force = false): Promise<TurnoutSnapshot> {
   if (force) {
-    return refreshSnapshot();
+    return fetchAndPersistSnapshot();
+  }
+
+  if (isVercel && useBuildTimeCache()) {
+    const cached = await readLocalCache();
+    if (cached) return cached;
+    throw new Error(
+      "Missing data/cache.json. Run npm run sync before npm run build.",
+    );
   }
 
   if (isVercel) {

@@ -12,7 +12,7 @@ npm run sync    # optional locally — writes data/cache.json
 npm run dev     # http://localhost:3000
 ```
 
-On Vercel, data is cached in memory via Next.js (no filesystem writes).
+`npm run build` runs `sync` first, writes `data/cache.json`, then builds static pages from that file (so the build does not hit Google once per route). At runtime on Vercel, pages use Next.js `unstable_cache` and the daily cron refreshes data.
 
 ## Deploy (Vercel)
 
