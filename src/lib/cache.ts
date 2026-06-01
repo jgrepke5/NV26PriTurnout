@@ -6,8 +6,6 @@ import { isCacheStale } from "./schedule";
 import type { TurnoutSnapshot } from "./types";
 
 const CACHE_TAG = "turnout-data";
-/** Bump when publishing sheet updates before the daily noon sync. */
-const DATA_REVISION = "20260528b";
 const REVALIDATE_SECONDS = 86400;
 const LOCAL_CACHE_PATH = path.join(process.cwd(), "data", "cache.json");
 
@@ -15,7 +13,7 @@ const isVercel = Boolean(process.env.VERCEL);
 
 const getCachedSnapshot = unstable_cache(
   async () => fetchTurnoutSnapshot(),
-  ["turnout-snapshot", DATA_REVISION],
+  ["turnout-snapshot"],
   { revalidate: REVALIDATE_SECONDS, tags: [CACHE_TAG] },
 );
 
