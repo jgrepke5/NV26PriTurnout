@@ -25,14 +25,6 @@
   --group-chart-width: 10.5rem;
   --group-chart-gap: 1.25rem;
   --col-group-divider: #b8b0a4;
-  --col-group-label-bg: #ddd8cf;
-  --col-group-registration-bg: #e6e1d8;
-  --col-group-vote-counts-bg: #d6e3ee;
-  --col-group-total-bg: #ebe4d8;
-  --col-group-vote-pcts-bg: #d9e6d9;
-  --col-group-turnout-bg: #ead8db;
-  --col-group-historical-turnout-bg: #e3dbd2;
-  --col-group-comparison-bg: #dde2d4;
 }
 
 *,
@@ -655,119 +647,10 @@ a:hover {
   text-align: right;
 }
 
-/* Column group distinction */
+/* Column group dividers */
 .data-table th.col-group-start,
 .data-table td.col-group-start {
   border-left: 2px solid var(--col-group-divider);
-}
-
-.data-table thead th.col-group-label,
-.grouped-table-sticky-head .data-table th.col-group-label {
-  background: var(--col-group-label-bg);
-}
-
-.data-table thead th.col-group-registration,
-.grouped-table-sticky-head .data-table th.col-group-registration {
-  background: var(--col-group-registration-bg);
-}
-
-.data-table thead th.col-group-vote-counts,
-.grouped-table-sticky-head .data-table th.col-group-vote-counts {
-  background: var(--col-group-vote-counts-bg);
-}
-
-.data-table thead th.col-group-total,
-.grouped-table-sticky-head .data-table th.col-group-total {
-  background: var(--col-group-total-bg);
-}
-
-.data-table thead th.col-group-vote-pcts,
-.grouped-table-sticky-head .data-table th.col-group-vote-pcts {
-  background: var(--col-group-vote-pcts-bg);
-}
-
-.data-table thead th.col-group-turnout,
-.grouped-table-sticky-head .data-table th.col-group-turnout {
-  background: var(--col-group-turnout-bg);
-}
-
-.data-table thead th.col-group-historical-turnout,
-.grouped-table-sticky-head .data-table th.col-group-historical-turnout {
-  background: var(--col-group-historical-turnout-bg);
-}
-
-.data-table thead th.col-group-comparison,
-.grouped-table-sticky-head .data-table th.col-group-comparison {
-  background: var(--col-group-comparison-bg);
-}
-
-.table-wrap--historical .data-table thead th.col-group-label,
-.table-wrap--rural .data-table thead th.col-group-label,
-.table-wrap--historical .grouped-table-sticky-head .data-table th.col-group-label,
-.table-wrap--rural .grouped-table-sticky-head .data-table th.col-group-label {
-  background: color-mix(in srgb, #f3ebe0 45%, var(--col-group-label-bg) 55%);
-}
-
-.table-wrap--historical .data-table thead th.col-group-historical-turnout,
-.table-wrap--rural .data-table thead th.col-group-historical-turnout,
-.table-wrap--historical .grouped-table-sticky-head .data-table th.col-group-historical-turnout,
-.table-wrap--rural .grouped-table-sticky-head .data-table th.col-group-historical-turnout {
-  background: color-mix(in srgb, #f3ebe0 35%, var(--col-group-historical-turnout-bg) 65%);
-}
-
-.table-wrap--historical .data-table thead th.col-group-comparison,
-.table-wrap--rural .data-table thead th.col-group-comparison,
-.table-wrap--historical .grouped-table-sticky-head .data-table th.col-group-comparison,
-.table-wrap--rural .grouped-table-sticky-head .data-table th.col-group-comparison {
-  background: color-mix(in srgb, #f3ebe0 35%, var(--col-group-comparison-bg) 65%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-label {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-label-bg) 45%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-registration {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-registration-bg) 45%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-vote-counts {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-vote-counts-bg) 45%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-total {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-total-bg) 45%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-vote-pcts {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-vote-pcts-bg) 45%);
-}
-
-.data-table tbody tr.row-county-header td.col-group-turnout {
-  background: color-mix(in srgb, var(--block-primary-header-bg) 55%, var(--col-group-turnout-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-label {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-label-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-registration {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-registration-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-vote-counts {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-vote-counts-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-total {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-total-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-vote-pcts {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-vote-pcts-bg) 45%);
-}
-
-.table-wrap--rural .data-table tbody tr.row-county-header td.col-group-turnout {
-  background: color-mix(in srgb, #f3ebe0 55%, var(--col-group-turnout-bg) 45%);
 }
 
 /* Pie charts beside data sections */
