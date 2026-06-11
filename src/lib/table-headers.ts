@@ -47,3 +47,52 @@ export function isNumericHeader(header: string, colIndex: number): boolean {
   if (colIndex === 0) return false;
   return /%|registration|vote|turnout|early|mail|e-day/i.test(header);
 }
+
+export type ColumnGroup =
+  | "label"
+  | "registration"
+  | "vote-counts"
+  | "total"
+  | "vote-pcts"
+  | "turnout"
+  | "historical-turnout"
+  | "comparison";
+
+function resolveColumnGroup(header: string, colIndex: number): ColumnGroup {
+  if (colIndex === 0) return "label";
+
+  const h = header.trim();
+  if (/^2026 vr$/i.test(h)) return "registration";
+  if (/early voted|mail voted|e-day voted/i.test(h)) return "vote-counts";
+  if (/total votes|votes to date/i.test(h)) return "total";
+  if (/% early votes|% mail votes|% e-day votes/i.test(h)) return "vote-pcts";
+  if (/^turnout %$/i.test(h)) return "turnout";
+  if (/% to (2014|2022|natl)/i.test(h)) return "comparison";
+  if (/2014 turnout %|2022 turnout %/i.test(h)) return "historical-turnout";
+  if (/2026 turnout %|nv turnout %/i.test(h)) return "turnout";
+  if (/national average turnout/i.test(h)) return "historical-turnout";
+  if (/%/.test(h)) return "vote-pcts";
+  if (/turnout|to %/i.test(h)) return "turnout";
+
+  return "registration";
+}
+
+/** CSS classes for visually grouped table columns */
+export function columnGroupClasses(
+  header: string,
+  colIndex: number,
+  headers: string[],
+): string {
+  const group = resolveColumnGroup(header, colIndex);
+  const prevHeader = colIndex > 0 ? (headers[colIndex - 1] ?? "") : "";
+  const prevGroup =
+    colIndex > 0 ? resolveColumnGroup(prevHeader, colIndex - 1) : null;
+  const isGroupStart = colIndex > 0 && group !== prevGroup;
+
+  return [
+    `col-group-${group}`,
+    isGroupStart ? "col-group-start" : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}

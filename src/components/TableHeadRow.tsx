@@ -1,4 +1,5 @@
 import {
+  columnGroupClasses,
   headerLines,
   isComparisonStateHeader,
   isNumericHeader,
@@ -23,6 +24,7 @@ export function TableHeadRow({
             key={`${h}-${i}`}
             className={[
               isNumericHeader(h, i) ? "num" : undefined,
+              columnGroupClasses(h, i, headers),
               groupNameColumn && i === 0 ? "th-group-name" : undefined,
               compactStateHeaders && isComparisonStateHeader(h)
                 ? "th-state-col"

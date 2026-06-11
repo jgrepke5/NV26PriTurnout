@@ -1,7 +1,8 @@
 import { displayLabel, isSubRow } from "@/lib/format";
-import { isNumericHeader } from "@/lib/table-headers";
+import { columnGroupClasses, isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
 import { RowLabel } from "./RowLabel";
+import { TableColGroup } from "./TableColGroup";
 import { TableHeadRow } from "./TableHeadRow";
 
 function isNumericColumn(headers: string[], colIndex: number): boolean {
@@ -58,6 +59,7 @@ export function DataTable({
     >
       <div className="table-scroll">
         <table className="data-table">
+          <TableColGroup headers={headers} />
           <TableHeadRow
             headers={headers}
             sticky={stickyHeader}
@@ -75,7 +77,12 @@ export function DataTable({
                   return (
                     <td
                       key={ci}
-                      className={isNum ? "num" : undefined}
+                      className={[
+                        isNum ? "num" : undefined,
+                        columnGroupClasses(headers[ci] ?? "", ci, headers),
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                       data-label={headers[ci]}
                     >
                       {ci === labelCol ? (

@@ -1,7 +1,7 @@
 "use client";
 
 import type { DataGroup } from "@/lib/breakout-table";
-import { isNumericHeader } from "@/lib/table-headers";
+import { columnGroupClasses, isNumericHeader } from "@/lib/table-headers";
 import type { CellValue } from "@/lib/types";
 import {
   useEffect,
@@ -10,21 +10,11 @@ import {
   type RefObject,
 } from "react";
 import { RowLabel } from "./RowLabel";
+import { TableColGroup } from "./TableColGroup";
 import { TableHeadRow } from "./TableHeadRow";
 import { TurnoutPieChart } from "./TurnoutPieChart";
 
 export type { DataGroup };
-
-function TableColGroup({ headers }: { headers: string[] }) {
-  return (
-    <colgroup>
-      <col className="col-label" />
-      {headers.slice(1).map((h) => (
-        <col key={h} className="col-data" />
-      ))}
-    </colgroup>
-  );
-}
 
 function TableScroll({ children }: { children: ReactNode }) {
   return <div className="table-scroll">{children}</div>;
@@ -183,7 +173,12 @@ function DataTableBodyRow({
         return (
           <td
             key={ci}
-            className={isNum ? "num" : undefined}
+            className={[
+              isNum ? "num" : undefined,
+              columnGroupClasses(headers[ci] ?? "", ci, headers),
+            ]
+              .filter(Boolean)
+              .join(" ")}
             data-label={headers[ci]}
           >
             {ci === labelCol ? <RowLabel text={text} /> : text}
