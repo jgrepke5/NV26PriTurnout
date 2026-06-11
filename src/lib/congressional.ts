@@ -68,20 +68,24 @@ function computeGrandTotalRow(
   const vrIdx = headers.indexOf("2026 VR");
   const earlyIdx = headers.indexOf("Early Voted");
   const mailIdx = headers.indexOf("Mail Voted");
+  const edayIdx = headers.indexOf("E-Day Voted");
   const votesIdx = headers.indexOf("Total Votes");
   const earlyPctIdx = headers.indexOf("% Early Votes");
   const mailPctIdx = headers.indexOf("% Mail Votes");
+  const edayPctIdx = headers.indexOf("% E-Day Votes");
   const turnoutIdx = headers.indexOf("Turnout %");
 
   const vr = vrIdx >= 0 ? parseVoteCount(row[vrIdx]) : 0;
   const early = earlyIdx >= 0 ? parseVoteCount(row[earlyIdx]) : 0;
   const mail = mailIdx >= 0 ? parseVoteCount(row[mailIdx]) : 0;
+  const eday = edayIdx >= 0 ? parseVoteCount(row[edayIdx]) : 0;
   const votes = votesIdx >= 0 ? parseVoteCount(row[votesIdx]) : 0;
-  const voteMethods = early + mail;
+  const voteMethods = early + mail + eday;
 
   if (vrIdx >= 0 && vr > 0) row[vrIdx] = formatCount(vr);
   if (earlyIdx >= 0 && early > 0) row[earlyIdx] = formatCount(early);
   if (mailIdx >= 0 && mail > 0) row[mailIdx] = formatCount(mail);
+  if (edayIdx >= 0 && eday > 0) row[edayIdx] = formatCount(eday);
   if (votesIdx >= 0 && votes > 0) row[votesIdx] = formatCount(votes);
 
   if (earlyPctIdx >= 0 && voteMethods > 0) {
@@ -89,6 +93,9 @@ function computeGrandTotalRow(
   }
   if (mailPctIdx >= 0 && voteMethods > 0) {
     row[mailPctIdx] = formatPct(mail / voteMethods);
+  }
+  if (edayPctIdx >= 0 && voteMethods > 0) {
+    row[edayPctIdx] = formatPct(eday / voteMethods);
   }
   if (turnoutIdx >= 0 && vr > 0) {
     row[turnoutIdx] = formatPct(votes / vr);

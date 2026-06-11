@@ -699,7 +699,7 @@ a:hover {
 }
 
 .grouped-table .col-data {
-  width: calc(76% / 7);
+  width: calc(76% / 9);
 }
 
 .data-group-chart {

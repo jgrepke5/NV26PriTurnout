@@ -33,6 +33,7 @@ const CURRENT_COLUMNS: ColumnSpec[] = [
   },
   { match: (h) => /% early votes/i.test(h), label: "% Early Votes" },
   { match: (h) => /% mail votes/i.test(h), label: "% Mail Votes" },
+  { match: (h) => /% e-day votes/i.test(h), label: "% E-Day Votes" },
 ];
 
 const HISTORICAL_COLUMNS: ColumnSpec[] = [

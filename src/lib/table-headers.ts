@@ -20,10 +20,12 @@ export function headerLines(label: string): string[] {
     "2026 VR": ["2026", "VR"],
     "Early Voted": ["Early", "Voted"],
     "Mail Voted": ["Mail", "Voted"],
+    "E-Day Voted": ["E-Day", "Voted"],
     "Total Votes": ["Total", "Votes"],
     "Votes to Date": ["Votes to", "Date"],
     "% Early Votes": ["% Early", "Votes"],
     "% Mail Votes": ["% Mail", "Votes"],
+    "% E-Day Votes": ["% E-Day", "Votes"],
     "Turnout %": ["Turnout", "%"],
     "2026 Turnout %": ["2026", "Turnout %"],
     "2014 Turnout %": ["2014", "Turnout %"],
@@ -43,5 +45,5 @@ export function headerLines(label: string): string[] {
 
 export function isNumericHeader(header: string, colIndex: number): boolean {
   if (colIndex === 0) return false;
-  return /%|registration|vote|turnout|early|mail/i.test(header);
+  return /%|registration|vote|turnout|early|mail|e-day/i.test(header);
 }

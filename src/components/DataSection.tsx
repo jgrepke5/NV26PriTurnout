@@ -4,7 +4,7 @@ import { DataTable } from "./DataTable";
 const SECTION_COPY: Record<string, { intro: string }> = {
   Statewide: {
     intro:
-      "Party-by-party turnout compared with 2014 and 2022 primaries, plus early and mail ballot splits.",
+      "Party-by-party turnout compared with 2014 and 2022 primaries, plus early, mail, and election day ballot splits.",
   },
   County: {
     intro:

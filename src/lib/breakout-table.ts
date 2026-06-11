@@ -31,9 +31,11 @@ const DATA_COLUMNS: ColumnSpec[] = [
   },
   { match: (h) => /early voted/i.test(h), label: "Early Voted" },
   { match: (h) => /mail voted/i.test(h), label: "Mail Voted" },
+  { match: (h) => /e-day voted/i.test(h), label: "E-Day Voted" },
   { match: (h) => /total votes/i.test(h), label: "Total Votes" },
   { match: (h) => /% early votes/i.test(h), label: "% Early Votes" },
   { match: (h) => /% mail votes/i.test(h), label: "% Mail Votes" },
+  { match: (h) => /% e-day votes/i.test(h), label: "% E-Day Votes" },
   { match: (h) => /turnout %/i.test(h), label: "Turnout %" },
 ];
 
