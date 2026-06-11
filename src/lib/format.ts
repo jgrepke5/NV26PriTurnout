@@ -1,5 +1,3 @@
-import { nextSyncAfter } from "./schedule";
-
 export function formatFetchedAt(iso: string): string {
   const d = new Date(iso);
   return d.toLocaleString("en-US", {
@@ -20,8 +18,4 @@ export function isSubRow(label: string): boolean {
 
 export function displayLabel(label: string): string {
   return label.trim();
-}
-
-export function nextRefreshAt(): string {
-  return formatFetchedAt(nextSyncAfter(new Date()).toISOString());
 }
